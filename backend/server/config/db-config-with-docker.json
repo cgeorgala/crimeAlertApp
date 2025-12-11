@@ -1,0 +1,7 @@
+{
+    "db": {
+      "host": "db",
+      "user": "postgres",
+      "database": "crime_alert_db"
+    }
+}

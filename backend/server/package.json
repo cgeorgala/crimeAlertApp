@@ -1,0 +1,33 @@
+{
+  "name": "crime-alert-backend",
+  "version": "1.0.0",
+  "description": "Report a crime in your neighborhood",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./app.js -e js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christina Georgala",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "forever": "^3.0.4",
+    "jsonwebtoken": "^9.0.2",
+    "node-fetch": "^2.7.0",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cgeorgala/crimeAlertApp.git"
+  },
+  "homepage": "https://github.com/cgeorgala/crimeAlertApp/blob/main/README.md",
+  "devDependencies": {},
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cgeorgala/crimeAlertApp/issues"
+  }
+}
