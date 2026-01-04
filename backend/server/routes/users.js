@@ -52,4 +52,18 @@ router.get('/logoutUser',(req,res)=>
     // TODO: Remember to delete the token in frontend, i.e. localStorage.removeItem('token');
 });
 
+//Modify handling
+router.put('/modifyUserInfo',(req,res)=>
+{
+    console.log(`Modify User Info!`);
+    //TODO: Coding
+});
+
+//Delete handling
+router.get('/deleteUser',(req,res)=>
+{
+    console.log(`Delete user!`);
+    //TODO: Coding
+});
+
 module.exports  = router;

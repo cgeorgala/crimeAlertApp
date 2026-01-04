@@ -88,7 +88,7 @@ Check all possible endpoints in swagger:
 * docker run --name postgres-docker -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 postgres
 
 ## Launch the psql utility
-* psql -d postgres -h localhost ip 5432 -U postgres
+* psql -d postgres -h localhost -p 5432 -U postgres
 
 ## Launch an interactive shell inside our container
 * docker exec -it postgres-docker psql -U postgres
