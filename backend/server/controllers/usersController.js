@@ -54,7 +54,7 @@ const postUsrQuery = `
 async function postNewUser(req, callback) 
 {
   try{
-    console.log(req.body)
+    console.log(req.body);
     const hashedPassword = await bcrypt.hash(req.body.password, 10); //Protect from brute-force attacks. Used in register and login
     const result = await db_pool.query(postUsrQuery, [
       req.body.first_name, 
@@ -79,13 +79,13 @@ const getPassQuery = `
   SELECT
    id, first_name, last_name, email, username, password, role, address
   FROM users
-  WHERE username = $1
+  WHERE username = $1 AND is_active = true
 `;
 
 async function getPassByUsername(req, callback)
 {
   try{
-    console.log(req.body.username, req.body.password); //TODO:delete the password printing
+    //console.log(req.body.username, req.body.password); //TODO:delete the password printing
     const {username, password} = req.body;
 
     if (!username || !password) //TODO: test this
@@ -136,15 +136,84 @@ async function getPassByUsername(req, callback)
     })
     //TODO: Token send to frontend, then saved i.e in localStorage and each time user requests protected endpoints, frontend sends the token.
     // Then backend receives the token and is evaluated. If valid --> user is authenticated, otherwise user is unauthorized
-    }
-    catch (err)
+  }
+  catch (err)
+  {
+      console.error("Login Error: ",err)
+      return callback(err, null);
+  }
+}
+
+const updateUserQuery = `
+  UPDATE users
+  SET
+    first_name = $1,
+    last_name = $2,
+    email = $3,
+    address = $4
+  WHERE id = $5 AND is_active = true
+  RETURNING id, username, email, first_name, last_name, role, address, is_active
+`;
+
+
+async function modifyUserInfo(req, callback)
+{
+  try{
+    const userId = req.user.id;
+    console.log("modifyUserInfo for userId:", userId);
+
+    const result = await db_pool.query(updateUserQuery, [
+      req.body.first_name, 
+      req.body.last_name, 
+      req.body.email, 
+      req.body.address,
+      userId
+    ]);
+
+    if (result.rowCount === 0)
     {
-        console.error("Login Error: ",err)
-        return callback(err, null);
+      return callback(new Error("User not found"), null);
     }
+
+    return callback(null, result.rows[0]);
+
+  }
+  catch (err)
+  {
+    return callback(err, null)
+  }
+}
+
+const deleteUserQuery = `
+  UPDATE users
+  SET is_active = false
+  WHERE id = $1 AND is_active = true
+  RETURNING id
+`;
+
+async function deleteUser(req, callback)
+{
+  try{
+    const userId = req.user.id;
+    const result = await db_pool.query(deleteUserQuery, [userId]);
+
+    if (result.rowCount === 0)
+    {
+      return callback(new Error("User not found to delete"), null);
+    }
+
+    return callback(null, {success: true});
+
+  }
+  catch (err)
+  {
+    return callback(err, null);
+  }
 }
 
 module.exports = {
   postNewUser,
-  getPassByUsername
+  getPassByUsername,
+  modifyUserInfo,
+  deleteUser
 }

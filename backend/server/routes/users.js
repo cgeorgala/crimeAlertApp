@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../controllers/usersController');
+const authToken = require('../middleware/authMiddleware');
 
 //Register handling
 router.post('/addUser',(req,res)=>
@@ -53,17 +54,44 @@ router.get('/logoutUser',(req,res)=>
 });
 
 //Modify handling
-router.put('/modifyUserInfo',(req,res)=>
+router.put('/modifyUserInfo', authToken, (req,res)=>
 {
     console.log(`Modify User Info!`);
-    //TODO: Coding
+    db.modifyUserInfo(req,
+        (err,data) => {
+            if (err) {
+                console.log(`Failed to modify user info, with server error:`, err.message);
+                return res.status(500).json({
+                    message: `Failed to modify user info: ${err.detail || err.message}`
+                    });
+            }
+            if (data.rowCount === 0)
+            {
+              return res.status(404).json({message: "ModifyUserInfo: user not found or inactive"});
+            }
+            console.log(`Modify user info success`);
+            return res.json( {"success": data} );
+    });
 });
 
-//Delete handling
-router.get('/deleteUser',(req,res)=>
+//Delete handling. This is actually a soft delete, so that incidents created by that user are not affected.
+router.delete('/deleteUser', authToken, (req,res)=>
 {
     console.log(`Delete user!`);
-    //TODO: Coding
+    db.deleteUser(req,
+        (err,data) => {
+            if (err) {
+                console.log(`Delete user failed, with server error:`, err.message);
+                return res.status(500).json({
+                    message: `Delete user failed, with server error: $(err.detail || err.message)` 
+                    });
+            }
+            else
+            {
+                console.log(`Delete user success`);
+                return res.json(data);
+            }
+    });
 });
 
 module.exports  = router;

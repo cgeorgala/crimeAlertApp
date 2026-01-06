@@ -11,6 +11,7 @@ CREATE TABLE users(
   password         character varying(200) NOT NULL,
   role             usr_role NOT NULL,
   address          character varying(255) NOT NULL,
+  is_active        BOOLEAN DEFAULT true,
 
   -- Keys
   -- Primary Key
