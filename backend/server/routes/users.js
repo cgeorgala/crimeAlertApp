@@ -83,7 +83,7 @@ router.delete('/deleteUser', authToken, (req,res)=>
             if (err) {
                 console.log(`Delete user failed, with server error:`, err.message);
                 return res.status(500).json({
-                    message: `Delete user failed, with server error: $(err.detail || err.message)` 
+                    message: `Delete user failed, with server error: ${err.detail || err.message})` 
                     });
             }
             else

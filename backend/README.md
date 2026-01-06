@@ -33,8 +33,8 @@ Check all possible endpoints in swagger:
 * http://localhost:8000/api/incidents/addIncident
 * http://localhost:8000/api/incidents/modifyIncident
 * http://localhost:8000/api/incidents/validateIncident
-* http://localhost:8000/api/incidents/findIncidentByStatus
-* http://localhost:8000/api/incidents/findAIncidentByUser
+* http://localhost:8000/api/incidents/myIncidents
+* http://localhost:8000/api/incidents/findIncidentBySeverity
 * http://localhost:8000/api/incidents/findIncidentByLocation
 * http://localhost:8000/api/incidents/findIncidentByTimestamp
 

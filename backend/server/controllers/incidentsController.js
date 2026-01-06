@@ -160,8 +160,43 @@ function validateIncident(req,callback)
   });
 }
 
+//Get incidents by user to be shown in user's dashboard
+const getIncidentsByUserQuery = `
+  SELECT
+    id,
+    usr_id,
+    title, 
+    incident_type, 
+    incident_date, 
+    severity,
+    address, 
+    latitude,
+    longitude, 
+    description,
+    date_created,
+    date_modified
+  FROM incidents
+  WHERE usr_id = $1
+  ORDER BY date_created DESC
+`;
+
+function getIncidentsByUser(req,callback)
+{
+  const userId= req.user.id; //from auth middleware
+
+  db_pool.query(getIncidentsByUserQuery,
+    [userId],
+    (err,result) => {
+    if (err) {
+      return callback(err, null);
+    }
+    return callback(null, result);
+  });
+}
+
 module.exports = {
   postNewIncident,
   editIncident,
-  validateIncident
+  validateIncident,
+  getIncidentsByUser
 }

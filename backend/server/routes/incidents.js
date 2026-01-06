@@ -62,8 +62,21 @@ router.put('/validateIncident', authToken, (req, res) => {
         });
 });
 
-router.get('/showDashboard', (req, res) => {
-    console.log(`Show Incident dashboard`);
+router.get('/myIncidents', authToken, (req, res) => {
+    console.log(`Fetch incidents for user:`, req.user.id);
+    db.getIncidentsByUser(req,
+        (err, result) => {
+            if (err) {
+                console.log("getIncidentsByUser: error", err.message || err.detail);
+                return res.status(500).json({ message: `Failed to fetch incidents by user: ${err.message}`});
+            }
+
+            console.log("getIncidentsByUser: success");
+            return res.json({
+                count: result.rowCount,
+                incidents: result.rows
+            });
+    });
 });
 
 router.get('/searchIncident', (req, res) => {
