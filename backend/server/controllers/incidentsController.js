@@ -178,19 +178,45 @@ const getIncidentsByUserQuery = `
   FROM incidents
   WHERE usr_id = $1
   ORDER BY date_created DESC
+  LIMIT $2 OFFSET $3
+`;
+
+const countIncidentsQuery = `
+  SELECT COUNT(*) FROM incidents WHERE usr_id = $1
 `;
 
 function getIncidentsByUser(req,callback)
 {
   const userId= req.user.id; //from auth middleware
 
-  db_pool.query(getIncidentsByUserQuery,
+  //TODO: Need to test pagination
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 10;
+  const offset = (page -1) * limit;
+
+  db_pool.query(countIncidentsQuery,
     [userId],
-    (err,result) => {
+    (err,countResult) => {
     if (err) {
       return callback(err, null);
     }
-    return callback(null, result);
+
+    //nested callback for data
+    const total = parseInt(countResult.rows[0].count);
+  
+    db_pool.query(getIncidentsByUserQuery,
+      [userId, limit, offset],
+      (err,result) => {
+      if (err) {
+        return callback(err, null);
+      }
+      return callback(null, {
+        page,
+        limit,
+        total,
+        incidents: result.rows
+      });
+    });
   });
 }
 
