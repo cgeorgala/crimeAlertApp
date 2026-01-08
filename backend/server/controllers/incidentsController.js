@@ -192,6 +192,15 @@ function getIncidentsByUser(req,callback)
   //TODO: Need to test pagination
   const page = parseInt(req.query.page, 10) || 1;
   const limit = parseInt(req.query.limit, 10) || 10;
+
+  // Validate received pagination values
+  if (isNaN(page) || page <1){
+    page = 1;
+  }
+  if (isNaN(limit) || limit <1 || limit >50){
+    limit = 10;
+  }
+
   const offset = (page -1) * limit;
 
   db_pool.query(countIncidentsQuery,
@@ -202,7 +211,8 @@ function getIncidentsByUser(req,callback)
     }
 
     //nested callback for data
-    const total = parseInt(countResult.rows[0].count);
+    const total = parseInt(countResult.rows[0].count, 10);
+    const totalPages = Math.ceil(total / limit);
   
     db_pool.query(getIncidentsByUserQuery,
       [userId, limit, offset],
@@ -214,6 +224,9 @@ function getIncidentsByUser(req,callback)
         page,
         limit,
         total,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
         incidents: result.rows
       });
     });

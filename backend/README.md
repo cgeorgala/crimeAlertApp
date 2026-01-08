@@ -38,6 +38,12 @@ Check all possible endpoints in swagger:
 * http://localhost:8000/api/incidents/findIncidentByLocation
 * http://localhost:8000/api/incidents/findIncidentByTimestamp
 
+## Examples for pagination
+* http://localhost:8000/api/incidents/myIncidents --> this one uses the default values page = 1, limit = 10
+* http://localhost:8000/api/incidents/myIncidents?page=1&limit=5 --> return incidents 1-5
+* http://localhost:8000/api/incidents/myIncidents?page=2&limit=5 --> returns incidents 6-10
+* http://localhost:8000/api/incidents/myIncidents?page=3&limit=5  --> returns incidents 11-15
+
 ## Info pages endpoints
 * http://localhost:8000/organization
 * http://localhost:8000/api/contact
