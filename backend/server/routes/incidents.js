@@ -72,12 +72,7 @@ router.get('/myIncidents', authToken, (req, res) => {
             }
 
             console.log("getIncidentsByUser: success");
-            return res.json({
-                page: result.page,
-                limit: result.limit,
-                total: result.total,
-                incidents: result.rows
-            });
+            return res.json(result);
     });
 });
 

@@ -190,10 +190,10 @@ function getIncidentsByUser(req,callback)
   const userId= req.user.id; //from auth middleware
 
   //TODO: Need to test pagination
-  const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 10;
+  let page = parseInt(req.query.page, 10) || 1;
+  let limit = parseInt(req.query.limit, 10) || 10;
 
-  // Validate received pagination values
+  //Validate received pagination values
   if (isNaN(page) || page <1){
     page = 1;
   }
@@ -210,27 +210,29 @@ function getIncidentsByUser(req,callback)
       return callback(err, null);
     }
 
-    //nested callback for data
+    //Nested callback for data
     const total = parseInt(countResult.rows[0].count, 10);
     const totalPages = Math.ceil(total / limit);
   
     db_pool.query(getIncidentsByUserQuery,
       [userId, limit, offset],
       (err,result) => {
-      if (err) {
-        return callback(err, null);
-      }
-      return callback(null, {
-        page,
-        limit,
-        total,
-        totalPages,
-        hasNext: page < totalPages,
-        hasPrev: page > 1,
-        incidents: result.rows
-      });
-    });
-  });
+          if (err) {
+            return callback(err, null);
+          }
+          return callback(null, {
+            page,
+            limit,
+            total,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrev: page > 1,
+            incidents: result.rows
+          });
+        }
+      );
+    }
+  );
 }
 
 module.exports = {
