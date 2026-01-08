@@ -76,13 +76,35 @@ router.get('/myIncidents', authToken, (req, res) => {
     });
 });
 
-router.get('/searchIncident', (req, res) => {
-    console.log(`Search Incident`);
+router.get('/showAll', (req, res) => {
+    console.log(`Fetch all Incidents`);
+
+    db.getAllIncidents(req,
+        (err, result) => {
+            if (err) {
+                console.log("getAllIncidents: error", err.message || err.detail);
+                return res.status(500).json({ message: `Failed to fetch incidents: ${err.message}`});
+            }
+
+            console.log("getAllIncidents: success");
+            return res.json(result);
+    });
 });
 
-router.get('/showIncident', (req, res) => {
-    console.log(`Show Incident`);
-});
+router.get('/map', (req, res) => {
+    console.log(`Fetch Incidents for map`);
 
+    db.getMapIncidents(req,
+        (err, result) => {
+            if (err) {
+                console.log("getMapIncidents: error", err.message || err.detail);
+                return res.status(500).json({ message: `Failed to fetch map incidents: ${err.message}`});
+            }
+
+            console.log("getMapIncidents: success");
+            return res.json(result);
+    });
+
+});
 
 module.exports  = router;

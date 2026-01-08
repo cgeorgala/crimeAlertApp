@@ -160,6 +160,33 @@ function validateIncident(req,callback)
   });
 }
 
+function buildIncidentFilters(query, values)
+{
+  let conditions = [];
+
+  if (query.severity){
+    values.push(query.severity);
+    conditions.push(`severity = $${values.length}`);
+  }
+
+  if (query.verify_status){
+    values.push(query.verify_status);
+    conditions.push(`verify_status = $${values.length}`);
+  }
+
+  if (query.from){
+    values.push(query.from);
+    conditions.push(`incident_date >= $${values.length}`);
+  }
+
+  if (query.to){
+    values.push(query.to);
+    conditions.push(`incident_date <= $${values.length}`);
+  }
+
+  return conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+}
+
 //Get incidents by user to be shown in user's dashboard
 const getIncidentsByUserQuery = `
   SELECT
@@ -189,11 +216,11 @@ function getIncidentsByUser(req,callback)
 {
   const userId= req.user.id; //from auth middleware
 
-  //TODO: Need to test pagination
+  //Pagination
   let page = parseInt(req.query.page, 10) || 1;
   let limit = parseInt(req.query.limit, 10) || 10;
 
-  //Validate received pagination values
+  //Validate received values
   if (isNaN(page) || page <1){
     page = 1;
   }
@@ -235,9 +262,126 @@ function getIncidentsByUser(req,callback)
   );
 }
 
+const getAllIncidentsQuery = `
+  SELECT *
+  FROM incidents
+`;
+
+const countAllIncidentsQuery = `
+  SELECT COUNT(*)
+  FROM incidents
+`;
+
+function getAllIncidents(req,callback)
+{
+  let values = [];
+
+  //Pagination
+  let page = parseInt(req.query.page, 10) || 1;
+  let limit = parseInt(req.query.limit, 10) || 10;
+
+  //Validate received values
+  if (isNaN(page) || page <1){
+    page = 1;
+  }
+  if (isNaN(limit) || limit <1 || limit >50){
+    limit = 10;
+  }
+
+  const offset = (page -1) * limit;
+
+  const filters = buildIncidentFilters(req.query, values);
+
+  //Count query
+  db_pool.query(
+    `${countAllIncidentsQuery}${filters}`,
+    values,
+    (err,countResult) => {
+    if (err) {
+      return callback(err, null);
+    }
+
+    //Nested callback for data
+    const total = parseInt(countResult.rows[0].count, 10);
+    const totalPages = Math.ceil(total / limit);
+  
+    db_pool.query(
+      `${getAllIncidentsQuery} ${where}
+      ORDER BY incident_date DESC
+      LIMIT $${values.length +1}
+      OFFSET $${values.length +2}`,
+      [...values, limit, offset],
+      (err,result) => {
+          if (err) {
+            return callback(err, null);
+          }
+          return callback(null, {
+            page,
+            limit,
+            total,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrev: page > 1,
+            incidents: result.rows
+          });
+        }
+      );
+    }
+  );
+}
+
+const getMapIncidentQuery = `
+SELECT 
+  id, 
+  title, 
+  incident_type,
+  severity,
+  latitude,
+  longitude,
+  verify_status
+FROM incidents
+`;
+
+function getMapIncidents(req,callback)
+{
+  const {north, south, east, west} = req.query;
+
+  if (!north || !south || !east || !west)
+  {
+    return callback(new Error('Map bounds are required'))
+  }
+
+  let values = [south, north, west, east];
+  let whereClause = `
+  WHERE latitude BETWEEN $1 AND $2
+    AND longitude BETWEEN $3 AND $4
+  `;
+ 
+  // Apply extra filters (severity, verify_status)
+  const extraValues = [];
+  const extraFilters = buildIncidentFilters(req.query, extraValues);
+
+  if (extraFilters)
+  {
+    whereClause += ` AND ${extraFilters.replace('WHERE', '')}`;
+    values = values.concat(extraValues);
+  }
+  db_pool.query(
+   `${getMapIncidentsQuery} ${whereClause}`,
+   values,
+   (err,result) => {
+       if (err) {
+         return callback(err, null);
+       }
+       return callback(null, result.rows);
+   });
+}
+
 module.exports = {
   postNewIncident,
   editIncident,
   validateIncident,
-  getIncidentsByUser
+  getIncidentsByUser,
+  getAllIncidents,
+  getMapIncidents
 }
