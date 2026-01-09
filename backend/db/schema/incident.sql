@@ -30,3 +30,7 @@ CREATE TABLE incidents (
     ON DELETE RESTRICT ON UPDATE CASCADE
 
 );
+
+-- Index for map filtering
+CREATE INDEX IF NOT EXISTS idx_incidents_lat_long
+  ON incidents (latitude, longitude);

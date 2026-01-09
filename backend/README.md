@@ -44,6 +44,14 @@ Check all possible endpoints in swagger:
 * http://localhost:8000/api/incidents/myIncidents?page=2&limit=5 --> returns incidents 6-10
 * http://localhost:8000/api/incidents/myIncidents?page=3&limit=5  --> returns incidents 11-15
 
+## Examples for filtering
+* http://localhost:8000/api/incidents/showAll?severity=Minor
+* http://localhost:8000/api/incidents/showAll?severity=Major&page=1&limit=10
+* http://localhost:8000/api/incidents/showAll?page=1&limit=10&severity=Major&startDate=2024-01-01&endDate=2025-12-31
+
+## Example for map endpoint
+* http://localhost:8000/api/incidents/map?north=38.05&south=37.90&east=23.80&west=23.60
+
 ## Info pages endpoints
 * http://localhost:8000/organization
 * http://localhost:8000/api/contact
@@ -130,6 +138,9 @@ unix  2      [ ACC ]     STREAM     LISTENING     19616    -                   /
 
 ## Application URL
 * https://christinageo.cloudns.cl/
+
+## Code repository
+* https://github.com/cgeorgala/crimeAlertApp
 
 ## DNS hosting
 * ClouDNS
