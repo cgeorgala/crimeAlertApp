@@ -70,9 +70,10 @@ Check all possible endpoints in swagger:
 * Receiver: citizen's registration email
 
 ## Accounts created
-* crime.alert.hua@protonmail.com  / password: admin123
-* crime.alert.user.hua@proton.me / password: user1234
-* crime.alert.user2.hua@proton.me / password: user1234
+* crime.alert.hua@protonmail.com
+* crime.police.hua@protonmail.com
+* crime.alert.user.hua@proton.me
+* crime.alert.user2.hua@proton.me
 
 # Postgres #
 * username: postgres, password: postges
@@ -153,19 +154,19 @@ unix  2      [ ACC ]     STREAM     LISTENING     19616    -                   /
 # User accounts #
 
 ## Admin email
-* email: crime.alert.hua@protonmail.com | password: admin123
+* email: crime.alert.hua@protonmail.com
 
 ## Police 
 * username: crimePolice | password: police123
-* email: crime.police.hua@protonmail.com | password: police123 
+* email: crime.police.hua@protonmail.com
 
 
 ## Citizens 
 * User1
 * username: christinageo | password: christina123
-* email: crime.alert.user.hua@proton.me | password: user1234
+* email: crime.alert.user.hua@proton.me
 
 * User2
 * username: giannis | password: giannis123
-* email: crime.alert.user2.hua@proton.me | password: user1234
+* email: crime.alert.user2.hua@proton.me
 
