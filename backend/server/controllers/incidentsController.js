@@ -160,28 +160,33 @@ function validateIncident(req,callback)
   });
 }
 
-function buildIncidentFilters(query, values)
+function buildIncidentFilters(query, values, startIndex)
 {
   let conditions = [];
+  let idx = startIndex;
 
   if (query.severity){
     values.push(query.severity);
-    conditions.push(`severity = $${values.length}`);
+    conditions.push(`severity = $${idx}::sev_type`);
+    idx++;
   }
 
   if (query.verify_status){
     values.push(query.verify_status);
-    conditions.push(`verify_status = $${values.length}`);
+    conditions.push(`verify_status = $${idx}::verif_status`);
+    idx++;
   }
 
   if (query.from){
     values.push(query.from);
-    conditions.push(`incident_date >= $${values.length}`);
+    conditions.push(`incident_date >= $${idx}`);
+    idx++;
   }
 
   if (query.to){
     values.push(query.to);
-    conditions.push(`incident_date <= $${values.length}`);
+    conditions.push(`incident_date <= $${idx}`);
+    idx++;
   }
 
   return conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
@@ -306,7 +311,7 @@ function getAllIncidents(req,callback)
     const totalPages = Math.ceil(total / limit);
   
     db_pool.query(
-      `${getAllIncidentsQuery} ${where}
+      `${getAllIncidentsQuery} ${filters}
       ORDER BY incident_date DESC
       LIMIT $${values.length +1}
       OFFSET $${values.length +2}`,
@@ -335,6 +340,7 @@ SELECT
   id, 
   title, 
   incident_type,
+  incident_date,
   severity,
   latitude,
   longitude,
@@ -344,11 +350,39 @@ FROM incidents
 
 function getMapIncidents(req,callback)
 {
-  const {north, south, east, west} = req.query;
+  const {north, south, east, west, from, to} = req.query;
 
   if (!north || !south || !east || !west)
   {
     return callback(new Error('Map bounds are required'))
+  }
+
+  // Date format validation
+  if (from && isNaN(Date.parse(from)))
+  {
+    return callback(new Error('Invalid FROM date'));
+  }
+  if (to && isNaN(Date.parse(to)))
+  {
+    return callback(new Error('Invalid TO date'));
+  }
+
+  //Logical date validation
+  if (from && to && new Date(from) > new Date(to))
+  {
+    return callback(new Error('FROM date can not be after TO date'));
+  }
+
+  // Enforce limit for map safety
+  const DEFAULT_LIMIT = 500;
+  const MAX_LIMIT = 1000;
+
+  let limit = parseInt(req.query.limit, 10) || DEFAULT_LIMIT;
+  if (isNaN(limit) || limit <1){
+    limit = DEFAULT_LIMIT;
+  }
+  if (limit > MAX_LIMIT){
+    limit = MAX_LIMIT;
   }
 
   let values = [south, north, west, east];
@@ -359,15 +393,21 @@ function getMapIncidents(req,callback)
  
   // Apply extra filters (severity, verify_status)
   const extraValues = [];
-  const extraFilters = buildIncidentFilters(req.query, extraValues);
+  const startIndex = values.length +1;
+  const extraFilters = buildIncidentFilters(req.query, extraValues, startIndex);
 
   if (extraFilters)
   {
     whereClause += ` AND ${extraFilters.replace('WHERE', '')}`;
     values = values.concat(extraValues);
   }
+
+  //Apply limit
+  values.push(limit);
+  const limitIndex = values.length;
+
   db_pool.query(
-   `${getMapIncidentsQuery} ${whereClause}`,
+   `${getMapIncidentQuery} ${whereClause} LIMIT $${limitIndex}`,
    values,
    (err,result) => {
        if (err) {

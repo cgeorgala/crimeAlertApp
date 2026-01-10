@@ -51,6 +51,8 @@ Check all possible endpoints in swagger:
 
 ## Example for map endpoint
 * http://localhost:8000/api/incidents/map?north=38.05&south=37.90&east=23.80&west=23.60
+* http://localhost:8000/api/incidents/map?north=38.05&south=37.90&east=23.80&west=23.60&severity=Major
+* http://localhost:8000/api/incidents/map?north=38.05&south=37.90&east=23.80&west=23.60&from=2025-01-01&to=2025-04-20&verify_status=Unverified&limit=2
 
 ## Info pages endpoints
 * http://localhost:8000/organization
@@ -64,13 +66,13 @@ Check all possible endpoints in swagger:
 * Service: gmail
 * Node server triggers email with required information through endpoint
 
-* Sender: crime.alert.hua@gmail.com
+* Sender: crime.alert.hua@protonmail.com 
 * Receiver: citizen's registration email
 
 ## Accounts created
-* crime.alert.hua@gmail.com / password: crimeAlert123
-* crime.alert.user.hua@gmail.com / password: crimeAlert123
-* crime.alert.user2.hua@gmail.com / password: crimeAlert123
+* crime.alert.hua@protonmail.com  / password: admin123
+* crime.alert.user.hua@proton.me / password: user1234
+* crime.alert.user2.hua@proton.me / password: user1234
 
 # Postgres #
 * username: postgres, password: postges
@@ -150,17 +152,20 @@ unix  2      [ ACC ]     STREAM     LISTENING     19616    -                   /
 
 # User accounts #
 
+## Admin email
+* email: crime.alert.hua@protonmail.com | password: admin123
+
 ## Police 
 * username: crimePolice | password: police123
-* email: crime.alert.hua@gmail.com | password: crimeAlert123 
+* email: crime.police.hua@protonmail.com | password: police123 
 
 
 ## Citizens 
 * User1
 * username: christinageo | password: christina123
-* email: crime.alert.user.hua@gmail.com | password: crimeAlert123
+* email: crime.alert.user.hua@proton.me | password: user1234
 
 * User2
 * username: giannis | password: giannis123
-* email: vcrime.alert.user2.hua@gmail.com | password: crimeAlert123
+* email: crime.alert.user2.hua@proton.me | password: user1234
 
