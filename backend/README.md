@@ -34,9 +34,6 @@ Check all possible endpoints in swagger:
 * http://localhost:8000/api/incidents/modifyIncident
 * http://localhost:8000/api/incidents/validateIncident
 * http://localhost:8000/api/incidents/myIncidents
-* http://localhost:8000/api/incidents/findIncidentBySeverity
-* http://localhost:8000/api/incidents/findIncidentByLocation
-* http://localhost:8000/api/incidents/findIncidentByTimestamp
 
 ## Examples for pagination
 * http://localhost:8000/api/incidents/myIncidents --> this one uses the default values page = 1, limit = 10
@@ -167,6 +164,6 @@ unix  2      [ ACC ]     STREAM     LISTENING     19616    -                   /
 * email: crime.alert.user.hua@proton.me
 
 * User2
-* username: giannis | password: giannis123
+* username: maria | password: 123456
 * email: crime.alert.user2.hua@proton.me
 
