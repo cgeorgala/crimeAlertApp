@@ -4,7 +4,6 @@ const db = require('../controllers/incidentsController');
 const authToken = require('../middleware/authMiddleware');
 
 const fetch = require("node-fetch");
-const { email }  = require('../config/mail-conf.json');
 
 // Create new incident, add it in incidents table
 // Protected code so that only logged in users can create incidents
