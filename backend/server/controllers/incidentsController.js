@@ -6,6 +6,8 @@ const path = require('path');
 const { Pool } = require('pg');
 const { db }  = require('../config/db-config.json');
 
+const transporter = require('../../email/mailer');
+
 // Getting password from db-pass.txt file
 // This file should be gitignored and chmod chmod protected
 const DB_PASS_FILEPATH = path.resolve(path.join(__dirname, './../config/db-pass.txt'));
@@ -31,6 +33,53 @@ const postIncidentQuery = `
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10 )
     RETURNING id
 `;
+
+const getActiveUsersEmailsQuery = `
+  SELECT email
+    FROM users
+  WHERE is_active = true
+`;
+
+function notifyUsersAboutIncident(incident)
+{
+  console.log("Start notifyUsersAboutIncident!");
+  db_pool.query(getActiveUsersEmailsQuery,
+    (err, result) => {
+      console.log(err, result);
+      if (err) {
+        console.error('Failed to fetch user emails:', err);
+        return;
+      }
+
+      const emails = result.rows.map(r => r.email);
+      if (!emails.length)
+      {
+        return;
+      }
+
+      const emailOptions = {
+          from: process.env.EMAIL_FROM,
+          bcc: emails,
+          subject: '🚨 New Crime Alert Reported',
+          text: `A new incident has been reported:
+
+          Title: ${incident.title}
+          Type: ${incident.incident_type}
+          Severity: ${incident.severity}
+          Address: ${incident.address}
+          Date: ${incident.incident_date}
+
+          Please stay alert!
+          `,
+      };
+
+      transporter.sendMail(emailOptions, (emailErr) => {
+        if (emailErr){
+        console.error('Email notification failed:', emailErr);
+        }
+      });
+    });
+}
 
 function setIncidentDefaults(body)
 {
@@ -68,9 +117,10 @@ function postNewIncident(req, callback)
       if (err) {
         return callback(err, null);
       }
-      else{
-        return callback(null, result);
-      }
+
+      //Send email notifications(async)
+      notifyUsersAboutIncident(req.body);
+      return callback(null, result);
   });
 }
 

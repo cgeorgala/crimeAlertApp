@@ -63,7 +63,7 @@ Check all possible endpoints in swagger:
 * Service: gmail
 * Node server triggers email with required information through endpoint
 
-* Sender: crime.alert.hua@protonmail.com 
+* Sender: crime.alert.hua@gmail.com 
 * Receiver: citizen's registration email
 
 ## Accounts created
