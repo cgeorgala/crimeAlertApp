@@ -1,11 +1,9 @@
-version: "3"
+version: "3.9"
 services: 
   db:
       build:
         context: ./db
         dockerfile: postgres.Dockerfile
-      ports:
-        - "5432:5432"
       restart: always
       volumes:
         - postgres_data:/var/lib/postgresql/data/
@@ -20,14 +18,6 @@ services:
         - "8000:8000"
       depends_on:
         - db
-  mail:
-      build:
-        context: ./email
-        dockerfile: mailServer.Dockerfile
-      command: npm start
-      ports:
-        - "5000:5000"
-      depends_on:
-        - web
+
 volumes:
   postgres_data:

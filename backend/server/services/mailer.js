@@ -1,19 +1,6 @@
 process.title = 'email_server';
 
-const path = require('path');
-require('dotenv').config({
-    path: path.resolve(__dirname, '.env')
-});
-
-const express = require('express');
 const nodemailer = require('nodemailer');
-
-const app = express();
-const PORT = 5000;
-
-//Configure to run frontend from localhost
-const cors = require('cors');
-app.use(cors());
 
 console.log("Email host:", process.env.EMAIL_HOST);
 console.log("Email port:", process.env.EMAIL_USER);
@@ -45,16 +32,5 @@ transporter.verify()
   });
 })();
 */
-
-app.get('/', (req,res) =>
-{
-    console.log(`Nodemailer is up and running!`);
-    res.send(`Nodemailer is running on port ${PORT}`);
-}
-);
-
-app.listen(PORT, () => 
-    console.log(`Nodemailer is running on port ${PORT}`)
-);
 
 module.exports = transporter;

@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const { Pool } = require('pg');
-const { db }  = require('../config/db-config.json');
+const { db }  = require('../config/db-config.js');
 
-const transporter = require('../../email/mailer');
+const transporter = require('../services/mailer');
 
 // Getting password from db-pass.txt file
 // This file should be gitignored and chmod chmod protected

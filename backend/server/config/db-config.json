@@ -1,9 +1,0 @@
-{
-    "db": {
-        "host": "localhost",
-        "user": "postgres",
-        "password": "postgres",
-        "database": "crime_alert_db",
-        "port": 5432
-    }
-}

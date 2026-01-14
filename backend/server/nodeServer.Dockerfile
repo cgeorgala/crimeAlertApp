@@ -12,5 +12,8 @@ COPY ./ ./
 # Execute commands inside the container
 RUN npm install
 
+# Expose backend port
+EXPOSE 8000
+
 # Tell what to do when it starts as a container
 CMD ["npm", "start"]

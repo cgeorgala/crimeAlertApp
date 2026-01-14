@@ -6,8 +6,6 @@ const express = require('express');
 const pg = require('pg');
 
 // Project configuration
-const config = require('./config/db-config.json');
-const router = express.Router();
 const app = express();
 const PORT = process.env.PORT || 8000;
 

@@ -57,11 +57,11 @@ Check all possible endpoints in swagger:
 * http://localhost:8000/termsOfUse
 * http://localhost:8000/privacyPolicy
 
-## Email server endpoint
-* /notifyUser
+## Email notifications
 * Require: nodemailer
 * Service: gmail
-* Node server triggers email with required information through endpoint
+* Node.js library used on demand, to make outgoing SMTP connections
+* Email sending triggered during creation of a new incident
 
 * Sender: crime.alert.hua@gmail.com 
 * Receiver: citizen's registration email
@@ -106,6 +106,7 @@ Check all possible endpoints in swagger:
 
 ## Launch an interactive shell inside our container
 * docker exec -it postgres-docker psql -U postgres
+* docker exec -it backend_db_1 psql -U postgres -d crime_alert_db
 * \l --> list all databases
 * \c crime_alert_db --> connect to crime_alert_db
 * \d --> show all tables
@@ -114,21 +115,12 @@ Check all possible endpoints in swagger:
 * SELECT * FROM users;
 * SELECT * FROM incidents;
 
-# Mail server #
-
-## Create docker image from specific Dockerfile and tag it with a name
-* docker build -f mailServer.Dockerfile . --tag mail-server
-
-## Create container from specific image
-* docker run --name mail-server-container -p 5000:5000 -d mail-server
-
 # Dockercompose #
 
 * docker-compose up --build -d
 * docker-compose.yml files
 ** service db for postgres
 ** service web for node server
-** service mail for mail-server
 
 ## Solve Problem 
 * proxy: listen tcp 0.0.0.0:5432: bind: address already in use.
@@ -151,7 +143,7 @@ unix  2      [ ACC ]     STREAM     LISTENING     19616    -                   /
 # User accounts #
 
 ## Admin email
-* email: crime.alert.hua@protonmail.com
+* email: crime.alert.hua@gmail.com
 
 ## Police 
 * username: crimePolice | password: police123

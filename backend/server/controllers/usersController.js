@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // after login in every API request
 
 const { Pool } = require('pg');
-const { db }  = require('../config/db-config.json');
+const { db }  = require('../config/db-config.js');
 
 // Getting password from db-pass.txt file
 // This file should be gitignored and chmod chmod protected
