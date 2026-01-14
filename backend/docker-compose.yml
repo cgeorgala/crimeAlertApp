@@ -13,7 +13,8 @@ services:
         dockerfile: nodeServer.Dockerfile
       command: npm start
       environment:
-        - DB_URL=postgresql://postgres:postgres@db/crime_alert_db
+        DB_URL: postgresql://postgres:postgres@db/crime_alert_db
+        RUNNING_IN_DOCKER: "true"
       ports:
         - "8000:8000"
       depends_on:
