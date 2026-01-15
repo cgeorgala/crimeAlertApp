@@ -21,6 +21,7 @@ app.use(express.json());
 app.use('/api', require('./routes/index'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/incidents', require('./routes/incidents'));
+app.use('/api/info', require('./routes/info'));
 
 // Swagger
 // app.use(

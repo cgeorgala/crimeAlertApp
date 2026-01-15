@@ -52,10 +52,10 @@ Check all possible endpoints in swagger:
 * http://localhost:8000/api/incidents/map?north=38.05&south=37.90&east=23.80&west=23.60&from=2025-01-01&to=2025-04-20&verify_status=Unverified&limit=2
 
 ## Info pages endpoints
-* http://localhost:8000/organization
-* http://localhost:8000/api/contact
-* http://localhost:8000/termsOfUse
-* http://localhost:8000/privacyPolicy
+* http://localhost:8000/api/info/organization
+* http://localhost:8000/api/info/termsOfUse
+* http://localhost:8000/api/info/privacyPolicy
+* http://localhost:8000/api/info/contact
 
 ## Email notifications
 * Require: nodemailer
