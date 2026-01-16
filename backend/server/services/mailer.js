@@ -19,7 +19,7 @@ let transporter = nodemailer.createTransport(
 });
 
 transporter.verify()
-.then(() => console.log("Mail server is ready"))
+.then(() => console.log("Nodemailer is ready"))
 .catch(err => console.error("Mail error: ", err));
 
 /**  TEST sending of email **

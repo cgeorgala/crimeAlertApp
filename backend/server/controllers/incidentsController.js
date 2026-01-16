@@ -60,16 +60,16 @@ function notifyUsersAboutIncident(incident)
       const emailOptions = {
           from: process.env.EMAIL_FROM,
           bcc: emails,
-          subject: '🚨 New Crime Alert Reported',
-          text: `A new incident has been reported:
+          subject: '🚨 Νέα Αναφορά συμβάντος - Crime Alert',
+          text: `Καταχωρήθηκε νέο συμβάν στην εφαρμογή Crime Alert:
 
-          Title: ${incident.title}
-          Type: ${incident.incident_type}
-          Severity: ${incident.severity}
-          Address: ${incident.address}
-          Date: ${incident.incident_date}
+          Τίτλος: ${incident.title}
+          Κατηγορία: ${incident.incident_type}
+          Σοβαρότητα: ${incident.severity}
+          Διεύθυνση: ${incident.address}
+          Ημερομηνία: ${new Date(incident.incident_date).toLocaleString('el-GR')}
 
-          Please stay alert!
+          Μείνετε ασφαλείς και ενημερωμένοι!
           `,
       };
 
@@ -344,8 +344,8 @@ function getAllIncidents(req,callback)
   }
 
   const offset = (page -1) * limit;
-
-  const filters = buildIncidentFilters(req.query, values);
+  const startIndex = 1;
+  const filters = buildIncidentFilters(req.query, values, startIndex);
 
   //Count query
   db_pool.query(
@@ -360,11 +360,15 @@ function getAllIncidents(req,callback)
     const total = parseInt(countResult.rows[0].count, 10);
     const totalPages = Math.ceil(total / limit);
   
+    const limitIndex = values.length + 1;
+    const offsetIndex = values.length + 2;
+
     db_pool.query(
-      `${getAllIncidentsQuery} ${filters}
+     `${getAllIncidentsQuery}
+      ${filters}
       ORDER BY incident_date DESC
-      LIMIT $${values.length +1}
-      OFFSET $${values.length +2}`,
+      LIMIT $${limitIndex}
+      OFFSET $${offsetIndex}`,
       [...values, limit, offset],
       (err,result) => {
           if (err) {

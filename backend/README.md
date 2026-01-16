@@ -44,7 +44,7 @@ Check all possible endpoints in swagger:
 ## Examples for filtering
 * http://localhost:8000/api/incidents/showAll?severity=Minor
 * http://localhost:8000/api/incidents/showAll?severity=Major&page=1&limit=10
-* http://localhost:8000/api/incidents/showAll?page=1&limit=10&severity=Major&startDate=2024-01-01&endDate=2025-12-31
+* http://localhost:8000/api/incidents/showAll?page=1&limit=10&severity=Major&from=2024-01-01&to=2025-12-31
 
 ## Example for map endpoint
 * http://localhost:8000/api/incidents/map?north=38.05&south=37.90&east=23.80&west=23.60

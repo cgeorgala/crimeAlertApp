@@ -42,9 +42,9 @@ function getPrivacyPolicy(req, callback){
 }
 
 async function submitContactForm(req, callback){
-    const {name, email, subject, message} = req.body;
+    const {name, surname, email, phone, subject, message} = req.body;
 
-    if (!name || !email || !subject || !message){
+    if (!name || !surname || !email || !phone || !subject || !message){
         return callback({message: "Όλα τα πεδία είναι υποχρεωτικά"});
     }
 
@@ -61,7 +61,7 @@ async function submitContactForm(req, callback){
             from: `"Crime Alert App" <${process.env.EMAIL_USER}>`,
             to: process.env.EMAIL_USER,
             subject: `[CrimeAlert Επικοινωνία] ${subject}`,
-            text: `Όνομα: ${name}\nEmail: ${email}\n\nΜήνυμα:\n${message}`
+            text: `Όνομα: ${name} \nΕπώνυμο: ${surname} \nEmail: ${email} \nΤηλέφωνο: ${phone}\n\nΜήνυμα:\n${message}`
         }
 
         await transporter.sendMail(emailOptions);
