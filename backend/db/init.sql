@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS users(
   password         character varying(200) NOT NULL,
   role             usr_role NOT NULL,
   address          character varying(255),
+  area             character varying(100),
+  zip_code         character varying(10),
   is_active        BOOLEAN DEFAULT true,
 
   -- Keys

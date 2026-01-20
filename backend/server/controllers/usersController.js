@@ -44,11 +44,14 @@ const db_pool = new Pool({
 const postUsrQuery = `
   INSERT INTO users (
     first_name, last_name, 
-    email, username, password,
-    role, address )
+    email, username, password, role,
+    address, area, zip_code )
   VALUES(
-    $1, $2, $3, $4, $5, $6, $7 )
-  RETURNING *
+    $1, $2, $3, $4, $5, $6, $7, $8, $9 )
+  RETURNING 
+    id, first_name, last_name, 
+    email, username, role,
+    address, area, zip_code
   `;
 
 async function postNewUser(req, callback) 
@@ -62,8 +65,10 @@ async function postNewUser(req, callback)
       req.body.email, 
       req.body.username, 
       hashedPassword, 
-      req.body.role, 
-      req.body.address
+      'citizen', 
+      req.body.address,
+      req.body.area || null, //optional
+      req.body.zip_code || null  //optional
     ]);
       console.log("postNewUser in DB result=", result);
       return callback(null, result.rows[0]);

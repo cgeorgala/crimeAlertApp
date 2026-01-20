@@ -122,6 +122,9 @@ Check all possible endpoints in swagger:
 ** service db for postgres
 ** service web for node server
 
+## Delete docker volume
+* docker-compose down -v 
+
 ## Solve Problem 
 * proxy: listen tcp 0.0.0.0:5432: bind: address already in use.
 * netstat -anp | grep 5432      
