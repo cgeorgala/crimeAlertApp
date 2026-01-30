@@ -21,7 +21,7 @@ module.exports = function authenticateToken(req, res, next)
         if (err)
         {
             console.error('JWT verification error:' , err);
-            return res.status(403).json({message: "Invalid token"});
+            return res.status(401).json({message: "Invalid token"});
         }
 
         // Set decoded payload to req
