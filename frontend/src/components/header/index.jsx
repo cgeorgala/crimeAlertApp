@@ -8,15 +8,18 @@ import {
   IconButton,
   MenuItem,
   Menu,
+  Box,
 } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
+import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 
 import { useGetMenuItems } from './useGetMenuItems';
 import { selectUser } from '../../store/auth';
+import logo from '../../assets/app-logo.jpg';
 
 export const TopMenuBar = () => {
   const user = useSelector(selectUser);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
   const navigate = useNavigate();
 
   const handleMenu = event => {
@@ -27,6 +30,14 @@ export const TopMenuBar = () => {
     setAnchorEl(null);
   };
 
+  const handleMenu2 = event => {
+    setAnchorEl2(event.currentTarget);
+  };
+
+  const handleClose2 = () => {
+    setAnchorEl2(null);
+  };
+
   const handleMenuItemClick = item => {
     item.onClick?.();
     item.route && navigate(item.route);
@@ -34,13 +45,29 @@ export const TopMenuBar = () => {
   };
 
   const menuItems = useGetMenuItems();
+  const incidentMenuItems = menuItems.filter(item =>
+  ['Δημιουργία Συμβάντος', 'Πίνακας Συμβάντων', 'Αναζήτηση Συμβάντων', 'Προβολή όλων των συμβάντων'].includes(item.label)
+);
+  const userMenuItems = menuItems.filter(item =>
+  ['Επεξεργασία στοιχείων', 'Διαγραφή προφίλ', 'Έξοδος'].includes(item.label)
+);
 
   return (
     <AppBar position="static">
-      <Toolbar sx={{ minHeight: '100px!important' }}>
-        <Typography variant="subtitle" component="div" sx={{ flexGrow: 1 }}>
-          Stay informed stay safe
-        </Typography>
+      <Toolbar sx={{ 
+        minHeight: '100px!important',display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navigate('/')}>
+          <Box
+            component="img"
+            src={logo}
+            alt="Crime Alert App Logo"
+            sx={{ height: '80%', maxHeight: 100, mr: 2 }}
+          />
+          <Typography variant="subtitle" component="div" sx={{ fontWeight: 800 }}>
+            Stay informed stay safe
+          </Typography>
+        </Box>
+
         <IconButton
           size="large"
           edge="start"
@@ -50,8 +77,11 @@ export const TopMenuBar = () => {
         >
         </IconButton>
 
+        <Box sx={{ flexGrow: 1 }} />
+
         {user && (
           <div>
+            {/*Incidents menu*/}
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -60,7 +90,7 @@ export const TopMenuBar = () => {
               onClick={handleMenu}
               color="inherit"
             >
-              <AccountCircle />
+              <MenuIcon />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -77,7 +107,44 @@ export const TopMenuBar = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              {menuItems.map(item => (
+              {incidentMenuItems.map(item => (
+                <MenuItem
+                  key={item.label}
+                  onClick={() => handleMenuItemClick(item)}
+                >
+                  {item.label}
+                </MenuItem>
+              ))}
+            </Menu>
+
+            {/*Users menu*/}
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar-2"
+              aria-haspopup="true"
+              onClick={handleMenu2}
+              color="inherit"
+              sx={{ ml : 0.1 }} // small margin between icons
+            >
+              <AccountCircle /> 
+            </IconButton>
+            <Menu
+              id="menu-appbar-2"
+              anchorEl={anchorEl2}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorEl2)}
+              onClose={handleClose2}
+            >
+              {userMenuItems.map(item => (
                 <MenuItem
                   key={item.label}
                   onClick={() => handleMenuItemClick(item)}

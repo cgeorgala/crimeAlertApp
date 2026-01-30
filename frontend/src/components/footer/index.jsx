@@ -16,19 +16,49 @@ export const Footer = () => {
       component="footer"
       sx={{
         py: 2,
-        bgcolor: 'grey.900',
-        color: 'grey.100',
+        bgcolor: '#04533D',
+        color: 'rgba(255,255,255,0.9)',
         height: '130px',
       }}
     >
       <Grid container>
         <Grid item size={3}></Grid>
         <Grid item size={6}></Grid>
+        {/*Links on the right*/}
         <Grid item size={3}>
-          <Typography>{FOOTER_TEXT.LINKS_TITLE}</Typography>
+          <Typography sx={{fontWeight: 600, mb: 1}}>
+            {FOOTER_TEXT.LINKS_TITLE}
+          </Typography>
+
           {publicRoutes.map(route => (
-            <Link href="#" onClick={() => handleLinkClick(route.path)} sx={{display: 'block'}}>{route.title}</Link>
+            <Link href="#" 
+            onClick={() => handleLinkClick(route.path)}
+            sx={{
+              display: 'block',
+              color: 'inherit',
+              textDecorationColor: 'inherit',
+              '&:hover':{
+                textDecorationColor: 'inherit',
+                opacity: 0.85,
+              },
+            }}
+            >
+              {route.title}
+            </Link>
           ))}
+        </Grid>
+        {/*Copyright*/}
+        <Grid item size={12}>
+          <Typography
+            variant="body2"
+            sx={{ 
+              textAlign: 'center',
+              mt: 2, 
+              opacity: 0.8, 
+            }}
+          >
+            {FOOTER_TEXT.COPYRIGHT}
+          </Typography>
         </Grid>
       </Grid>
     </Box>

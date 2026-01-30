@@ -10,6 +10,8 @@ import { App } from './App';
 import { store, persistor } from './store';
 import './index.css';
 import { GlobalToast } from './components/toaster';
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from './theme';
 
 const container = document.getElementById('root');
 
@@ -20,14 +22,16 @@ if (container) {
     <StrictMode>
       <Provider store={store}>
         <GlobalToast />
-        <BrowserRouter>
-          <PersistGate
-            loading={<CircularProgress color="secondary" />}
-            persistor={persistor}
-          >
-            <App />
-          </PersistGate>
-        </BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <PersistGate
+              loading={<CircularProgress color="secondary" />}
+              persistor={persistor}
+            >
+              <App />
+            </PersistGate>
+          </BrowserRouter>
+        </ThemeProvider>
       </Provider>
     </StrictMode>,
   );
