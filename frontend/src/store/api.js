@@ -88,6 +88,13 @@ export const api = createApi({
     getPrivacyPolicy: builder.query({
       query: () => '/info/privacyPolicy',
     }),
+    submitContactForm: builder.mutation({
+      query: data => ({
+        url: '/info/contact',
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -104,4 +111,5 @@ export const {
   useDeleteUserMutation,
   useLazyGetMyIncidentsMapQuery,
   useLazyGetAllIncidentsQuery,
+  useSubmitContactFormMutation,
 } = api;

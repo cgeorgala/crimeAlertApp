@@ -1,16 +1,26 @@
 import { Controller } from 'react-hook-form';
-import { FormControl, FormLabel, TextField } from '@mui/material';
+import { FormControl, FormLabel, TextField, FormHelperText } from '@mui/material';
 
-export const FormInput = ({ rules, label, control, name }) => {
+export const FormInput = ({ rules, label, control, name, multiline, rows}) => {
   return (
     <Controller
       name={name}
       control={control}
       rules={rules}
-      render={({ field }) => (
-        <FormControl margin="normal" fullWidth>
+      render={({ field, fieldState }) => (
+        <FormControl margin="normal" fullWidth error={!!fieldState.error}>
           <FormLabel>{label}</FormLabel>
-          <TextField {...field} rows={5} />
+          <TextField
+            {...field}
+            multiline={multiline || false}
+            rows={rows || 1}
+            error={!!fieldState.error}
+          />
+          {fieldState.error && (
+            <FormHelperText>
+              {fieldState.error.message}
+            </FormHelperText>
+          )}
         </FormControl>
       )}
     />
