@@ -25,19 +25,19 @@ export const ROUTES_MAP = {
     requireGuest: true,
     component: UserRegisterPage,
   },
-  dashboard: {
-    path: '/dashboard',
+  incidentsList: {
+    path: '/incidentsList',
+    title: 'Τα Συμβάντα μου',
+    requireAuth: true,
+    requireGuest: false,
+    component: IncidentsListPage,
+  },
+  incidentCreate: {
+    path: '/incidentCreate',
     title: 'Δημιουργία Συμβάντος',
     requireAuth: true,
     requireGuest: false,
     component: IncidentCreatePage,
-  },
-  incidentsList: {
-    path: '/incidentsList',
-    title: 'Πίνακας Συμβάντων',
-    requireAuth: true,
-    requireGuest: false,
-    component: IncidentsListPage,
   },
   incidentsFilterList: {
     path: '/incidentsFilterList',

@@ -22,6 +22,11 @@ export const TopMenuBar = () => {
   const [anchorEl2, setAnchorEl2] = React.useState(null);
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    setAnchorEl(null);
+    setAnchorEl2(null);
+  }, [user])
+
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -46,7 +51,7 @@ export const TopMenuBar = () => {
 
   const menuItems = useGetMenuItems();
   const incidentMenuItems = menuItems.filter(item =>
-  ['Δημιουργία Συμβάντος', 'Πίνακας Συμβάντων', 'Αναζήτηση Συμβάντων', 'Προβολή όλων των συμβάντων'].includes(item.label)
+  ['Τα Συμβάντα μου', 'Δημιουργία Συμβάντος', 'Αναζήτηση Συμβάντων', 'Προβολή όλων των συμβάντων'].includes(item.label)
 );
   const userMenuItems = menuItems.filter(item =>
   ['Επεξεργασία στοιχείων', 'Διαγραφή προφίλ', 'Έξοδος'].includes(item.label)

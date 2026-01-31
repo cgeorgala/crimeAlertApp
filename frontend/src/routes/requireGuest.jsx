@@ -4,5 +4,5 @@ import { useSelector } from 'react-redux';
 export const RequireGuest = () => {
   const token = useSelector(s => s.auth.token);
 
-  return token ? <Navigate to="/dashboard" replace /> : <Outlet />;
+  return token ? <Navigate to="/incidentsList" replace /> : <Outlet />;
 };

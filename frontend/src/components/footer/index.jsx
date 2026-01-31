@@ -26,6 +26,7 @@ export const Footer = () => {
         <Grid item size={6}></Grid>
         {/*Links on the right*/}
         <Grid item size={3}>
+          <Box sx={{textAlign: 'right', pr: 4}}>
           <Typography sx={{fontWeight: 600, mb: 1}}>
             {FOOTER_TEXT.LINKS_TITLE}
           </Typography>
@@ -46,6 +47,7 @@ export const Footer = () => {
               {route.title}
             </Link>
           ))}
+        </Box>
         </Grid>
         {/*Copyright*/}
         <Grid item size={12}>

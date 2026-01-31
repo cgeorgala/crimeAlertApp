@@ -6,10 +6,10 @@ export const LOGIN_FIELD_NAMES = {
 export const LOGIN_FORM_FIELDS = [
   {
     name: LOGIN_FIELD_NAMES.USERNAME,
-    label: 'Όνομα',
+    label: 'Όνομα Χρήστη',
   },
   {
     name: LOGIN_FIELD_NAMES.PASSWORD,
-    label: 'Επώνυμο',
+    label: 'Κωδικός',
   },
 ];
