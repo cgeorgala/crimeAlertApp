@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS users(
 );
 
 -- Create INCIDENT  table
-CREATE TYPE inc_type AS ENUM ('Robery', 'Burglary', 'Vandalism', 'Vehicle Theft', 'Murder', 'Assault', 'Other');
+CREATE TYPE inc_type AS ENUM ('Robbery', 'Burglary', 'Vandalism', 'Vehicle Theft', 'Murder', 'Assault', 'Other');
 CREATE TYPE verif_status AS ENUM ('Verified-official', 'Verified-Unofficial', 'Unverified');
 CREATE TYPE sev_type AS ENUM ('Critical', 'Major', 'Minor', 'Not Applicable');
 
