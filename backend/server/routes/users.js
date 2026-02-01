@@ -10,11 +10,31 @@ router.post('/addUser',(req,res)=>
     db.postNewUser(req,
         (err,data) => {
             if (err) {
-                return res.json({ "Failed to add new user, with error" : err.detail });
+                console.log(`Failed to addNewUser, with error:`, err.detail);
+                if (err.code === '23505'){
+                    if (err.constraint === 'user_umail_key')
+                    {
+                      return res.status(409).json({
+                        message: "Το email χρησιμοποιείται ήδη",
+                        field: 'email' });
+                    }
+                    if (err.constraint === 'user_uname_key')
+                    {
+                      return res.status(409).json({
+                        message: "Το username χρησιμοποιείται ήδη",
+                        field: 'username' });
+                    }
+                }
+                return res.status(500).json({
+                    message: "Σφάλμα κατά τη δημιουργία χρήστη",
+                });
             }
             else {
                 console.log(data);
-                return res.json( {"success": data} );
+                return res.status(201).json( {
+                    message: 'Ο χρήστης δημιουργήθηκε επιτυχώς',
+                    success: data,
+                });
             }
     });
 });

@@ -1,6 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { setCredentials, logout, updateUserData } from './auth';
 import { baseQueryWithAuth } from './utils';
+import { showToast } from './toaster';
+
 
 export const api = createApi({
   reducerPath: 'api',
@@ -13,6 +15,21 @@ export const api = createApi({
         method: 'POST',
         body: data,
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try{
+            const { data } = await queryFulfilled;
+            dispatch(showToast({
+              message: 'Ο λογαριασμός δημιουργήθηκε επιτυχώς',
+              severity: 'success',
+            }));
+        }
+        catch(err){
+            dispatch(showToast({
+              message: err?.error?.data?.message ||'Το email ή το username χρησιμοποιείται ήδη',
+              severity: 'error',
+            }));
+        }
+      },
     }),
     loginUser: builder.mutation({
       query: data => ({
