@@ -4,8 +4,13 @@ import { Typography, Button, Grid } from '@mui/material';
 
 import { CONTACT_US_FORM_FIELDS, CONTACT_US_FIELD_NAMES, CONTACT_US_TEXT } from './constants';
 import { useSubmitContactFormMutation } from '../../store/api';
+import { showToast } from '../../store/toaster';
+import { useDispatch } from 'react-redux';
+
 
 export const ContactUsPage = () => {
+
+  const dispatch = useDispatch();
 
   const { control, handleSubmit } = useForm({
     mode: 'onBlur',
@@ -25,11 +30,17 @@ export const ContactUsPage = () => {
       console.log('Form data:', data);
 
       const result = await submitContactForm(data).unwrap();
-      alert(result.message); //TODO: change alert
+      dispatch(showToast({
+        message: result?.message || 'Το μήνυμα στάλθηκε επιτυχώς',
+        severity: 'success',
+      }));
     }
     catch(err){
-      console.error('Fetch error:', err);
-      alert('Σφάλμα κατά την αποστολή'); //TODO: change alert
+      console.error('Contact form error:', err);
+      dispatch(showToast({
+        message: err?.data?.message || 'Σφάλμα κατά την αποστολή του μηνύματος',
+        severity: 'error',
+      }));
     }
   };
 
