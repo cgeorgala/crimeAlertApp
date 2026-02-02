@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { FormInput } from '../../components/formInput';
 import {
   ADD_INCIDENT_FIELD_NAMES,
@@ -28,12 +28,18 @@ export const IncidentCreatePage = () => {
     defaultValues: {
       [ADD_INCIDENT_FIELD_NAMES.TITLE]: '',
       [ADD_INCIDENT_FIELD_NAMES.INCIDENT_TYPE]: '',
+      [ADD_INCIDENT_FIELD_NAMES.SEVERITY]: '',
       [ADD_INCIDENT_FIELD_NAMES.INCIDENT_DATE]: dayjs(),
       [ADD_INCIDENT_FIELD_NAMES.DESCRIPTION]: '',
     },
   });
 
   const onSubmit = data => {
+    if (!markerPosition)
+    {
+        alert('Πρέπει να επιλέξετε θέση στο χάρτη'); //TODO: remove alert, add toaster
+        return;
+    }
     createIncident({
       ...data,
       [ADD_INCIDENT_FIELD_NAMES.INCIDENT_DATE]:
@@ -72,6 +78,7 @@ export const IncidentCreatePage = () => {
                   control={control}
                   label={ADD_INCIDENT_FIELD_LABELS.TITLE}
                   name={ADD_INCIDENT_FIELD_NAMES.TITLE}
+                  rules={{ required: 'Τίτλος συμβάντος υποχρεωτικός' }}
                 />
               </Grid>
               <Grid size={{ md: 6 }}>
@@ -88,6 +95,7 @@ export const IncidentCreatePage = () => {
                   label={ADD_INCIDENT_FIELD_LABELS.INCIDENT_TYPE}
                   name={ADD_INCIDENT_FIELD_NAMES.INCIDENT_TYPE}
                   options={INCIDENT_TYPE_OPTIONS}
+                  rules={{ required: 'Τύπος συμβάντος υποχρεωτικός' }}
                 />
               </Grid>
               <Grid size={{ md: 6 }}>
@@ -96,6 +104,7 @@ export const IncidentCreatePage = () => {
                   label={ADD_INCIDENT_FIELD_LABELS.SEVERITY}
                   name={ADD_INCIDENT_FIELD_NAMES.SEVERITY}
                   options={SEVERITY_TYPE_OPTIONS}
+                  rules={{ required: 'Βαθμός σοβαρότητας υποχρεωτικός' }}
                 />
               </Grid>
               <Grid size={{ md: 12 }}>
@@ -129,6 +138,13 @@ export const IncidentCreatePage = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
             </MapContainer>
+
+            { !markerPosition && (
+              <Typography color="error" sx={{ mt: 1 }}>
+                Πρέπει να επιλέξετε θέση στο χάρτη
+              </Typography>
+            )}
+
             <Button
               type="submit"
               disabled={isLoading}

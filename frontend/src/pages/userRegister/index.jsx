@@ -47,7 +47,7 @@ export const UserRegisterPage = () => {
                   }
                   :formField.name === REGISTER_FIELD_NAMES.PASSWORD
                   ?{
-                      required: 'Κωδικός Υποχρεωτικό',
+                      required: 'Κωδικός Υποχρεωτικός',
                       minLength: {
                         value: 6,
                         message: 'Ο κωδικός πρέπει να έχει τουλάχιστον 6 χαρακτήρες',
@@ -59,7 +59,7 @@ export const UserRegisterPage = () => {
                   }
                   :formField.name === REGISTER_FIELD_NAMES.ZIPCODE
                   ?{
-                    required: 'Τ.Κ. Υποχρεωτικό',
+                    required: 'Τ.Κ. Υποχρεωτικός',
                     /*setValueAs: v => String(v).trim(), //convert to string to apply regex*/
                     pattern:{
                       value: /^[0-9]{5}$/,

@@ -57,7 +57,25 @@ export const ContactUsPage = () => {
                 control={control}
                 label={formField.label}
                 name={formField.name}
-                rules={{required: `${formField.label} Υποχρεωτικό`}}
+                rules={
+                  formField.name === CONTACT_US_FIELD_NAMES.EMAIL
+                  ?{
+                    required: 'Email Υποχρεωτικό',
+                    pattern:{
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'Μη έγκυρη μορφή email',
+                    },
+                  }
+                  :formField.name === CONTACT_US_FIELD_NAMES.PHONE
+                  ?{
+                    required: 'Τηλέφωνο Υποχρεωτικό',
+                    pattern:{
+                      value: /^[0-9]{10}$/,
+                      message: 'Το τηλέφωνο πρέπει να αποτελείται από 10 ψηφία',
+                    },
+                  }
+                  :{required: `${formField.label} Υποχρεωτικό`}
+                }
               />
             </Grid>
           ))}
