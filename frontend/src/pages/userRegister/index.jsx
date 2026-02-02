@@ -36,6 +36,39 @@ export const UserRegisterPage = () => {
                 control={control}
                 label={formField.label}
                 name={formField.name}
+                rules={
+                  formField.name === REGISTER_FIELD_NAMES.EMAIL
+                  ?{
+                    required: 'Email Υποχρεωτικό',
+                    pattern:{
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'Μη έγκυρη μορφή email',
+                    },
+                  }
+                  :formField.name === REGISTER_FIELD_NAMES.PASSWORD
+                  ?{
+                      required: 'Κωδικός Υποχρεωτικό',
+                      minLength: {
+                        value: 6,
+                        message: 'Ο κωδικός πρέπει να έχει τουλάχιστον 6 χαρακτήρες',
+                      },
+                      pattern: {/*
+                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+                        message: 'Ο κωδικός πρέπει να περιέχει κεφαλαίο, μικρό γράμμα και αριθμό',
+                      */},
+                  }
+                  :formField.name === REGISTER_FIELD_NAMES.ZIPCODE
+                  ?{
+                    required: 'Τ.Κ. Υποχρεωτικό',
+                    /*setValueAs: v => String(v).trim(), //convert to string to apply regex*/
+                    pattern:{
+                      value: /^[0-9]{5}$/,
+                      message: 'Ο Τ.Κ. πρέπει να αποτελείται από 5 ψηφία',
+                    },
+                  }
+                  :{
+                    required: `${formField.label} Υποχρεωτικό`
+                  }}
               />
             </Grid>
           ))}
