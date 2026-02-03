@@ -35,6 +35,11 @@ export const HomePage = () => {
                 control={control}
                 label={formField.label}
                 name={formField.name}
+                type={
+                  formField.name === LOGIN_FIELD_NAMES.PASSWORD
+                  ? 'password'
+                  : 'text'
+                }
                 rules={{required: 
                   formField.name === LOGIN_FIELD_NAMES.USERNAME
                       ? 'Το όνομα χρήστη είναι υποχρεωτικό'

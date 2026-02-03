@@ -36,6 +36,11 @@ export const UserRegisterPage = () => {
                 control={control}
                 label={formField.label}
                 name={formField.name}
+                type={
+                  formField.name === REGISTER_FIELD_NAMES.PASSWORD
+                  ? 'password'
+                  : 'text'
+                }
                 rules={
                   formField.name === REGISTER_FIELD_NAMES.EMAIL
                   ?{

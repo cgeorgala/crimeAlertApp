@@ -1,7 +1,7 @@
 import { Controller } from 'react-hook-form';
 import { FormControl, FormLabel, TextField, FormHelperText } from '@mui/material';
 
-export const FormInput = ({ rules, label, control, name, multiline, rows}) => {
+export const FormInput = ({ rules, label, control, name, multiline, rows, type}) => {
   return (
     <Controller
       name={name}
@@ -12,6 +12,7 @@ export const FormInput = ({ rules, label, control, name, multiline, rows}) => {
           <FormLabel>{label}</FormLabel>
           <TextField
             {...field}
+            type={type || 'text'} 
             multiline={multiline || false}
             rows={rows || 1}
             error={!!fieldState.error}
