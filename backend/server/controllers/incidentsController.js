@@ -95,33 +95,101 @@ function setIncidentDefaults(body)
   return body;
 }
 
-function postNewIncident(req, callback) 
+// Get full address based on latidude, longitude
+// Nominatim reverse geocoding from OpenStreetMap
+async function getFullAddress(lat, lon)
 {
-  console.log(req.body);
-  req.body = setIncidentDefaults(req.body);
-  db_pool.query(postIncidentQuery, 
-    [
-      req.user.id, 
-      req.body.title,
-      req.body.incident_type,
-      req.body.incident_date,
-      req.body.severity,
-      req.body.address,
-      req.body.latitude,
-      req.body.longitude,
-      req.body.verify_status,
-      req.body.description
-    ], 
-    (err, result) => {
-      console.log(err, result);
-      if (err) {
-        return callback(err, null);
-      }
-
-      //Send email notifications(async)
-      notifyUsersAboutIncident(req.body);
-      return callback(null, result);
+  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1&zoom=18&accept-language=el`;
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "my-thesis-node-app (crime.alert.hua@gmail.com)"
+    }
   });
+
+  if (!response.ok) {
+    throw new Error("Nominatim request failed");
+  }
+
+  const data = await response.json();
+  const a = data.address || {};
+
+  // Fallbacks
+  const road = a.road || a.pedestrian || a.footway || a.path || a.cycleway || "";
+  const houseNumber = a.house_number || "";
+  const city = a.city || a.town || a.village || a.municipality || "";
+  const postcode = a.postcode || "";
+  const state = a.state || "";
+  const country = a.country || "";
+
+  // Build full address
+  const streetLine = [road, houseNumber].filter(Boolean).join(" ");
+  const cityLine = [postcode, city].filter(Boolean).join(" ");
+  const regionLine = [state, country].filter(Boolean).join(", ");
+
+  const fullAddress = [streetLine, cityLine, regionLine]
+    .filter(Boolean)
+    .join(", ");
+
+  return {
+    fullAddress,
+    parts: {
+      road,
+      houseNumber,
+      postcode,
+      city,
+      state,
+      country
+    },
+    raw: data
+  };
+}
+
+async function postNewIncident(req, callback)
+{
+  try{
+    console.log(req.body);
+    req.body = setIncidentDefaults(req.body);
+    if (!req.body.address && req.body.latitude && req.body.longitude)
+    {
+      try
+      {
+        const result = await getFullAddress(req.body.latitude, req.body.longitude);
+        req.body.address = result.fullAddress;
+        console.log("Reverse geocoding success, result:", req.body.address);
+      }catch (err)
+      {
+        console.error("Reverse geocoding failed:", err);
+        req.body.address = null;
+      }
+    }
+
+    db_pool.query(postIncidentQuery,
+      [
+        req.user.id,
+        req.body.title,
+        req.body.incident_type,
+        req.body.incident_date,
+        req.body.severity,
+        req.body.address,
+        req.body.latitude,
+        req.body.longitude,
+        req.body.verify_status,
+        req.body.description
+      ],
+      (err, result) => {
+        console.log(err, result);
+        if (err) {
+          return callback(err, null);
+        }
+
+        //Send email notifications(async)
+        notifyUsersAboutIncident(req.body);
+        return callback(null, result);
+    });
+ }catch (err)
+ {
+  return callback(err, null);
+ }
 }
 
 // Edit incident
