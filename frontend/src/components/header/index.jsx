@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
@@ -14,10 +14,15 @@ import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 
 import { useGetMenuItems } from './useGetMenuItems';
 import { selectUser } from '../../store/auth';
+import { useDeleteUserMutation } from '../../store/api';
+import { showToast } from '../../store/toaster';
 import logo from '../../assets/app-logo.jpg';
 
 export const TopMenuBar = () => {
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const [deleteUser] = useDeleteUserMutation();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
   const navigate = useNavigate();
@@ -43,7 +48,38 @@ export const TopMenuBar = () => {
     setAnchorEl2(null);
   };
 
-  const handleMenuItemClick = item => {
+  const handleMenuItemClick = async item => {
+    //Delete user menu item
+    if (item.label === 'Διαγραφή προφίλ'){
+      const confirmed = window.confirm(
+        'Είστε σίγουροι ότι θέλετε να διαγράψετε το προφίλ σας;'
+      );
+      if (!confirmed){
+        handleClose2();
+        return;
+      }
+
+      try{
+        await deleteUser().unwrap();
+        dispatch(
+          showToast({
+            message: 'Ο λογαριασμός διαγράφηκε επιτυχώς',
+            severity: 'success',
+          })
+        );
+      }catch (err) {
+        dispatch(
+          showToast({
+            message: 'Σφάλμα κατά τη διαγραφή λογαριασμού',
+            severity: 'error',
+          })
+        );
+      }
+      handleClose2();
+      return;
+    }
+
+    //Normal menu items
     item.onClick?.();
     item.route && navigate(item.route);
     handleClose();

@@ -17,7 +17,7 @@ export const useGetMenuItems = () => {
     {
       label: 'Διαγραφή προφίλ',
       route: null,
-      onClick: deleteUser,
+      onClick: null,
     },
     {
       label: 'Έξοδος',
