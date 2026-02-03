@@ -131,14 +131,8 @@ Check all possible endpoints in swagger:
 unix  2      [ ACC ]     STREAM     LISTENING     19616    -                   /var/run/postgresql/.s.PGSQL.5432
 * Solved by running: sudo service postgresql stop
 
-## Application URL
-* https://christinageo.cloudns.cl/
-
 ## Code repository
 * https://github.com/cgeorgala/crimeAlertApp
-
-## DNS hosting
-* ClouDNS
 
 ## SSL certificate
 * zeroSSL
@@ -161,4 +155,8 @@ unix  2      [ ACC ]     STREAM     LISTENING     19616    -                   /
 * User2
 * username: maria | password: 123456
 * email: crime.alert.user2.hua@proton.me
+
+* User3
+* username: giannis | password: 123456
+* email: crime.alert.hua@protonmail.com
 

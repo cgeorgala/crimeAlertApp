@@ -3,6 +3,8 @@ export const EDIT_USER_FIELD_NAMES = {
   EMAIL: 'email',
   SURNAME: 'last_name',
   ADDRESS: 'address',
+  AREA: 'area',
+  ZIPCODE: 'zip_code',
 };
 
 export const EDIT_USER_FORM_FIELDS = [
@@ -17,6 +19,14 @@ export const EDIT_USER_FORM_FIELDS = [
   {
     name: EDIT_USER_FIELD_NAMES.ADDRESS,
     label: 'Διεύθυνση',
+  },
+  {
+    name: EDIT_USER_FIELD_NAMES.ZIPCODE,
+    label: 'Ταχυδρομικός Κώδικας',
+  },
+  {
+    name: EDIT_USER_FIELD_NAMES.AREA,
+    label: 'Περιοχή',
   },
   {
     name: EDIT_USER_FIELD_NAMES.EMAIL,

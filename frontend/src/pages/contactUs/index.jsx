@@ -74,7 +74,7 @@ export const ContactUsPage = () => {
                       message: 'Το τηλέφωνο πρέπει να αποτελείται από 10 ψηφία',
                     },
                   }
-                  :{required: `${formField.label} Υποχρεωτικό`}
+                  :{required: `Πεδίο ${formField.label} Υποχρεωτικό`}
                 }
               />
             </Grid>

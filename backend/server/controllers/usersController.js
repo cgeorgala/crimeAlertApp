@@ -82,7 +82,7 @@ async function postNewUser(req, callback)
 // Get password by username, to login
 const getPassQuery = `
   SELECT
-   id, first_name, last_name, email, username, password, role, address
+   id, first_name, last_name, email, username, password, role, address, zip_code, area
   FROM users
   WHERE username = $1 AND is_active = true
 `;
@@ -136,7 +136,9 @@ async function getPassByUsername(req, callback)
         first_name: user.first_name,
         last_name: user.last_name,
         role: user.role,
-        address:user.address
+        address:user.address,
+        zip_code:user.zip_code,
+        area:user.area,
      } 
     })
     //TODO: Token send to frontend, then saved i.e in localStorage and each time user requests protected endpoints, frontend sends the token.
@@ -155,11 +157,12 @@ const updateUserQuery = `
     first_name = $1,
     last_name = $2,
     email = $3,
-    address = $4
-  WHERE id = $5 AND is_active = true
-  RETURNING id, username, email, first_name, last_name, role, address, is_active
+    address = $4,
+    area = $5,
+    zip_code = $6
+  WHERE id = $7 AND is_active = true
+  RETURNING id, username, email, first_name, last_name, role, address, area, zip_code, is_active
 `;
-
 
 async function modifyUserInfo(req, callback)
 {
@@ -172,6 +175,8 @@ async function modifyUserInfo(req, callback)
       req.body.last_name, 
       req.body.email, 
       req.body.address,
+      req.body.area || null,
+      req.body.zip_code || null,
       userId
     ]);
 

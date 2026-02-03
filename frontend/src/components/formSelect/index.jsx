@@ -1,5 +1,5 @@
 import { Controller } from 'react-hook-form';
-import { FormControl, FormLabel, Select, MenuItem } from '@mui/material';
+import { FormControl, FormLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 
 export const FormSelect = ({ rules, label, control, name, options = [] }) => {
   
@@ -8,16 +8,21 @@ export const FormSelect = ({ rules, label, control, name, options = [] }) => {
       name={name}
       control={control}
       rules={rules}
-      render={({ field }) => (
-        <FormControl margin="normal" fullWidth>
+      render={({ field, fieldState }) => (
+        <FormControl margin="normal" fullWidth error={!!fieldState.error}>
           <FormLabel>{label}</FormLabel>
           <Select {...field} labelId="country-label" label="Country">
             {options.map((o, i) => (
-              <MenuItem value={o.value} kei={i}>
+              <MenuItem value={o.value} key={i}>
                 {o.label}
               </MenuItem>
             ))}
           </Select>
+          {fieldState.error && (
+            <FormHelperText>
+              {fieldState.error.message}
+            </FormHelperText>
+          )}
         </FormControl>
       )}
     />

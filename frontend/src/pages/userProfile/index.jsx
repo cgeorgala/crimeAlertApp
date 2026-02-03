@@ -22,6 +22,9 @@ export const UserProfilePage = () => {
         userData[[EDIT_USER_FIELD_NAMES.SURNAME]],
       [EDIT_USER_FIELD_NAMES.ADDRESS]:
         userData[[EDIT_USER_FIELD_NAMES.ADDRESS]],
+      [EDIT_USER_FIELD_NAMES.ZIPCODE]:
+        userData[[EDIT_USER_FIELD_NAMES.ZIPCODE]],
+      [EDIT_USER_FIELD_NAMES.AREA]:userData[[EDIT_USER_FIELD_NAMES.AREA]],
       [EDIT_USER_FIELD_NAMES.EMAIL]: userData[[EDIT_USER_FIELD_NAMES.EMAIL]],
     },
   })
@@ -40,6 +43,26 @@ export const UserProfilePage = () => {
                 control={control}
                 label={formField.label}
                 name={formField.name}
+                rules={
+                  formField.name === EDIT_USER_FORM_FIELDS.EMAIL
+                  ?{
+                    required: 'Email Υποχρεωτικό',
+                    pattern:{
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'Μη έγκυρη μορφή email',
+                    },
+                  }
+                  :formField.name === EDIT_USER_FORM_FIELDS.ZIPCODE
+                  ?{
+                    required: 'Τ.Κ. Υποχρεωτικός',
+                    pattern:{
+                      value: /^[0-9]{5}$/,
+                      message: 'Ο Τ.Κ. πρέπει να αποτελείται από 5 ψηφία',
+                    },
+                  }
+                  :{
+                    required: `Πεδίο ${formField.label} Υποχρεωτικό`
+                  }}
               />
             </Grid>
           ))}
