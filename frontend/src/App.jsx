@@ -30,15 +30,14 @@ export const App = () => {
               element={<route.component />}
             />
           ))}
-          {publicRoutes.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<route.component />}
-            />
-          ))}
-          
         </Route>
+        {publicRoutes.map(route => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={<route.component />}
+          />
+        ))}
       </Routes>
     </AppLayout>
   );
