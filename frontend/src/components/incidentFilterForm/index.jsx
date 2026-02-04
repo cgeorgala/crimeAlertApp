@@ -85,7 +85,7 @@ export const IncidentsFilterForm = ({onSubmit}) => {
         </Grid>
       </LocalizationProvider>
       <Button variant="contained" type="submit">
-          Filter
+          Φιλτράρισμα
       </Button>
     </form>
 

@@ -14,11 +14,11 @@ export const FILTER_INCIDENT_FIELD_LABELS = {
 
 export const VERIFY_STATUS_OPTIONS = [
   {
-    label: 'Επίσημα-Επιβεβαιωμένο',
+    label: 'Επίσημο',
     value: 'Verified-official',
   },
   {
-    label: 'Ανεπίσημα-Επιβεβαιωμένο',
+    label: 'Ανεπίσημο',
     value: 'Verified-Unofficial',
   },
   {

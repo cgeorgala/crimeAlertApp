@@ -529,7 +529,10 @@ function getMapIncidents(req,callback)
   const limitIndex = values.length;
 
   db_pool.query(
-   `${getMapIncidentQuery} ${whereClause} LIMIT $${limitIndex}`,
+   `${getMapIncidentQuery} 
+    ${whereClause}
+    ORDER BY incident_date DESC 
+    LIMIT $${limitIndex}`,
    values,
    (err,result) => {
        if (err) {
