@@ -1,6 +1,7 @@
 import { HomePage } from '../pages/home';
 import { UserRegisterPage } from '../pages/userRegister';
 import { IncidentCreatePage } from '../pages/incidentCreate';
+import { IncidentVerifyPage } from '../pages/incidentVerify';
 import { IncidentsListPage } from '../pages/incidentsList';
 import { UserProfilePage } from '../pages/userProfile';
 import {ContactUsPage} from '../pages/contactUs';
@@ -38,6 +39,14 @@ export const ROUTES_MAP = {
     requireAuth: true,
     requireGuest: false,
     component: IncidentCreatePage,
+  },
+  incidentVerify: {
+    path: '/incidentVerify',
+    title: 'Επαλήθευση Συμβάντος',
+    requireAuth: true,
+    requireGuest: false,
+    component: IncidentVerifyPage,
+    roles:['police'],
   },
   incidentsFilterList: {
     path: '/incidentsFilterList',

@@ -82,6 +82,31 @@ export const api = createApi({
         body: data,
       }),
     }),
+    validateIncident: builder.mutation({
+      query: ({id, status}) => ({
+        url: '/incidents/validateIncident',
+        method: 'PUT',
+        body: {
+          id, 
+          verify_status: status,
+        },
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try{
+            const { data } = await queryFulfilled;
+            dispatch(showToast({
+              message: 'Η κατάσταση επαλήθευσης του συμβάντος ενημερώθκε',
+              severity: 'success',
+            }));
+        }
+        catch(err){
+            dispatch(showToast({
+              message: err?.error?.data?.message ||'Σφάλμα επαλήθευσης συμβάντος',
+              severity: 'error',
+            }));
+        }
+      },
+    }),
     getMyIncidentsMap: builder.query({
       query: params => {
         const queryString = new URLSearchParams(params).toString();
@@ -119,6 +144,7 @@ export const {
   useCreateUserMutation,
   useLoginUserMutation,
   useCreateIncidentMutation,
+  useValidateIncidentMutation,
   useGetMyIncidentsQuery,
   useLazyLogoutUserQuery,
   useModifyUserInfoMutation,

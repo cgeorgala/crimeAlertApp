@@ -1,15 +1,22 @@
 import { useLazyLogoutUserQuery, useDeleteUserMutation } from '../../store/api';
 import { getRoutesByAuthStatus } from '../../routes/constants';
+import { useSelector } from 'react-redux';
 
 export const useGetMenuItems = () => {
 
   const [logoutUser] = useLazyLogoutUserQuery();
   const [deleteUser] = useDeleteUserMutation();
 
+  const user = useSelector(state => state.auth.user);
   const { authRoutes } = getRoutesByAuthStatus();
 
   return [
-    ...authRoutes.map(route => ({
+    ...authRoutes
+    .filter(route => {
+      if (!route.roles) return true;
+      return route.roles.includes(user?.role);
+    })
+    .map(route => ({
       label: route.title,
       route: route.path,
       onClick: null,

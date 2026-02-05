@@ -87,7 +87,7 @@ export const TopMenuBar = () => {
 
   const menuItems = useGetMenuItems();
   const incidentMenuItems = menuItems.filter(item =>
-  ['Τα Συμβάντα μου', 'Δημιουργία Συμβάντος', 'Αναζήτηση Συμβάντων', 'Προβολή όλων των συμβάντων'].includes(item.label)
+  ['Τα Συμβάντα μου', 'Δημιουργία Συμβάντος', 'Επαλήθευση Συμβάντος', 'Αναζήτηση Συμβάντων', 'Προβολή όλων των συμβάντων'].includes(item.label)
 );
   const userMenuItems = menuItems.filter(item =>
   ['Επεξεργασία στοιχείων', 'Διαγραφή προφίλ', 'Έξοδος'].includes(item.label)
