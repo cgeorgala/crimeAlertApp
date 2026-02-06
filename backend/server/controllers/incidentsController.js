@@ -466,7 +466,8 @@ SELECT
   severity,
   latitude,
   longitude,
-  verify_status
+  verify_status,
+  description
 FROM incidents
 `;
 

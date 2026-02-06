@@ -40,7 +40,7 @@ export const IncidentsList = ({ incidents }) => {
               <ListItemButton onClick={() => handleListClick(incident?.id)}>
                 <ListItemText
                   primary={`
-                  ${new Date(incident.incident_date).toLocaleString()}   
+                  ${new Date(incident.incident_date).toLocaleString('el-GR')}
                   ${incident.incident_type}
                   `}
                 />
@@ -68,14 +68,14 @@ export const IncidentsList = ({ incidents }) => {
             >
               <Popup>
                 <Typography variant="subtitle2">
-                                    Συμβάν:{marker.title}
+                                    Συμβάν: {marker.title}
                 </Typography>
                 <Typography variant="caption" display={'block'}>
                                     Κατηγορία: {marker.incident_type}
                 </Typography>
                 <Typography variant="caption" display={'block'}>
                                     Ημερομηνία:{' '}
-                  {new Date(marker.incident_date).toLocaleString()}
+                  {new Date(marker.incident_date).toLocaleString('el-GR')}
                 </Typography>
                 <Typography variant="caption" display={'block'}>
                                     Περιγραφή: {marker.description}
@@ -83,7 +83,6 @@ export const IncidentsList = ({ incidents }) => {
               </Popup>
             </Marker>
           ))}
-
           <TileLayer
             attribution="&copy; OpenStreetMap contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
