@@ -4,6 +4,7 @@ import { ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { getIncidentTypeLabel } from './constants';
 
 export const IncidentsList = ({ incidents }) => {
 
@@ -65,8 +66,13 @@ export const IncidentsList = ({ incidents }) => {
                 <ListItemText
                   primary={`
                   ${new Date(incident.incident_date).toLocaleString('el-GR')}
-                  ${incident.incident_type}
+                  ${getIncidentTypeLabel(incident.incident_type)}
                   `}
+                  slotProps={{
+                    primary: {
+                      sx: { fontSize: '0.85rem'},
+                    },
+                  }}
                 />
               </ListItemButton>
             </ListItem>
@@ -96,7 +102,7 @@ export const IncidentsList = ({ incidents }) => {
                                     Συμβάν: {marker.title}
                 </Typography>
                 <Typography variant="caption" display={'block'}>
-                                    Κατηγορία: {marker.incident_type}
+                                    Κατηγορία: {getIncidentTypeLabel(marker.incident_type)}
                 </Typography>
                 <Typography variant="caption" display={'block'}>
                                     Ημερομηνία:{' '}
