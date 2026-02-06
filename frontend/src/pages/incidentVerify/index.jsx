@@ -28,9 +28,9 @@ export const IncidentVerifyPage = () => {
   }
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} sx={{ maxHeight: '500px', overflowY: 'auto', maxWidth: 620}}>
       {data.incidents.map(incident => (
-        <Paper key={incident.id} sx={{ width: '100%', maxWidth: 600, }}>
+        <Paper key={incident.id} sx={{ width: '100%', maxWidth: 600 }}>
           <Box sx={{ border:'1px solid #ddd', p: 2}}>
             <Typography variant="h6">{incident.title}</Typography>
             <Typography variant="body2">Διεύθυνση: {incident.address}</Typography>

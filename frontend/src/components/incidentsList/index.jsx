@@ -17,6 +17,30 @@ export const IncidentsList = ({ incidents }) => {
     shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
   });
 
+  const createSvgIcon = (color, scale=0.7) =>
+  L.divIcon({
+    className: '',
+    html: `
+      <svg width="30" height="42" viewBox="0 0 30 42">
+        <path
+          d="M15 0C7 0 0 7 0 15c0 11 15 27 15 27s15-16 15-27C30 7 23 0 15 0z"
+          fill="${color}"
+        />
+        <circle cx="15" cy="15" r="6" fill="white"/>
+      </svg>
+    `,
+    iconSize: [30, 42],
+    iconAnchor: [15, 42],
+    popupAnchor: [0, -36],
+  });
+
+  const severityIconMap = {
+  Critical: createSvgIcon('#d32f2f'), // red
+  Major: createSvgIcon('#f57c00'),    // orange
+  Minor: createSvgIcon('#388e3c'),    // green
+  'Not Applicable': createSvgIcon('#757575'), // gray
+};
+
   const handleListClick = id => {
     const marker = markerRefs.current[id];
     marker?.openPopup();
@@ -65,6 +89,7 @@ export const IncidentsList = ({ incidents }) => {
               ref={ref => {
                 markerRefs.current[marker.id] = ref;
               }}
+              icon={severityIconMap[marker.severity]}
             >
               <Popup>
                 <Typography variant="subtitle2">
