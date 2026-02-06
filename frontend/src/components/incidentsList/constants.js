@@ -29,7 +29,27 @@ export const INCIDENT_TYPE_OPTIONS = [
   },
 ];
 
+export const VERIFY_STATUS_OPTIONS = [
+  {
+    label: 'Επίσημο',
+    value: 'Verified-official',
+  },
+  {
+    label: 'Ανεπίσημο',
+    value: 'Verified-Unofficial',
+  },
+  {
+    label: 'Μη Επιβεβαιωμένο',
+    value: 'Unverified',
+  },
+];
+
 export const getIncidentTypeLabel = (value) => {
     const option = INCIDENT_TYPE_OPTIONS.find(opt => opt.value === value);
+    return option ? option.label : value;
+}
+
+export const getVerifyStatusLabel = (value) => {
+    const option = VERIFY_STATUS_OPTIONS.find(opt => opt.value === value);
     return option ? option.label : value;
 }

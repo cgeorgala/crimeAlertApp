@@ -4,7 +4,7 @@ import { ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { getIncidentTypeLabel } from './constants';
+import { getIncidentTypeLabel, getVerifyStatusLabel } from './constants';
 
 export const IncidentsList = ({ incidents }) => {
 
@@ -45,6 +45,49 @@ export const IncidentsList = ({ incidents }) => {
   const handleListClick = id => {
     const marker = markerRefs.current[id];
     marker?.openPopup();
+  };
+
+  const SeverityLegend = () => {
+    const legendItems = [
+      { label: 'Κρίσιμο', color: '#d32f2f' },
+      { label: 'Σημαντικό', color: '#f57c00' },
+      { label: 'Δευτερεύον', color: '#388e3c' },
+      { label: 'Μη εφαρμόσιμο', color: '#757575' },
+    ];
+  
+    return (
+      <div
+        style={{
+          display: 'flex',
+          gap: 16,
+          padding: '8px 12px',
+          marginTop: 8,
+          background: '#fff',
+          borderRadius: 6,
+          fontSize: '0.8rem',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+          flexWrap: 'wrap',
+        }}
+      >
+        {legendItems.map(item => (
+          <div
+            key={item.label}
+            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+          >
+            <span
+              style={{
+                width: 12,
+                height: 12,
+                borderRadius: '50%',
+                backgroundColor: item.color,
+                display: 'inline-block',
+              }}
+            />
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+    );
   };
     
   if (!incidents) {return null;}
@@ -109,6 +152,9 @@ export const IncidentsList = ({ incidents }) => {
                   {new Date(marker.incident_date).toLocaleString('el-GR')}
                 </Typography>
                 <Typography variant="caption" display={'block'}>
+                                    Κατάσταση: {getVerifyStatusLabel(marker.verify_status)}
+                </Typography>
+                <Typography variant="caption" display={'block'}>
                                     Περιγραφή: {marker.description}
                 </Typography>
               </Popup>
@@ -119,6 +165,7 @@ export const IncidentsList = ({ incidents }) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
         </MapContainer>
+        <SeverityLegend />
       </Grid>
     </Grid>
   );
