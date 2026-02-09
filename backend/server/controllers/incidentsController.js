@@ -210,10 +210,22 @@ const updateIncidentQuery = `
     RETURNING *
 `;
 
-function editIncident(req, callback)
+async function editIncident(req, callback)
 {
-  let verif_status = 'Unverified';
-  let date_modified = new Date();
+
+  if (!req.body.address && req.body.latitude && req.body.longitude)
+  {
+    try
+    {
+      const result = await getFullAddress(req.body.latitude, req.body.longitude);
+      req.body.address = result.fullAddress;
+      console.log("Reverse geocoding in edit incident success, result:", req.body.address);
+    }catch (err)
+    {
+      console.error("Reverse geocoding in edit incident failed:", err);
+      req.body.address = null;
+    }
+  }
   db_pool.query(updateIncidentQuery, 
     [
       req.body.title,
@@ -385,6 +397,27 @@ function getIncidentsByUser(req,callback)
   );
 }
 
+//Get incidents by id for incident modification
+const getIncidentByIdQuery = `
+  SELECT *
+  FROM incidents
+  WHERE id = $1
+    AND usr_id = $2
+`;
+
+function getIncidentById(incidentId, userId, callback)
+{
+  db_pool.query(getIncidentByIdQuery,
+    [incidentId, userId],
+    (err,result) => {
+      if (err) {
+        return callback(err);
+      }
+      return callback(null, result.rows[0]);
+    }
+  );
+}
+
 const getAllIncidentsQuery = `
   SELECT *
   FROM incidents
@@ -548,6 +581,7 @@ module.exports = {
   editIncident,
   validateIncident,
   getIncidentsByUser,
+  getIncidentById,
   getAllIncidents,
   getMapIncidents
 }

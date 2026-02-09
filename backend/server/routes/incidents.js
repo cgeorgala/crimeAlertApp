@@ -75,6 +75,7 @@ router.get('/myIncidents', authToken, (req, res) => {
     });
 });
 
+
 router.get('/showAll', (req, res) => {
     console.log(`Fetch all Incidents`);
 
@@ -104,6 +105,27 @@ router.get('/map', (req, res) => {
             return res.json(result);
     });
 
+});
+
+// Get incident by id, router is incidents/:id
+router.get('/:id', authToken, (req, res) => {
+    const incidentId = req.params.id;
+    const userId = req.user.id;
+
+    console.log(`Fetch incident ${incidentId} for user ${userId}`);
+    db.getIncidentById(incidentId, userId, 
+        (err, result) => {
+        if (err) {
+            console.log('getIncidentById: error', err.message || err.detail);
+            return res.status(500).json({ message: `Failed to fetch incident: ${err.message}` });
+        }
+        if (!result) {
+            return res.status(404).json({ message: 'Incident not found' });
+        }
+
+        console.log('getIncidentById: success');
+        return res.json({ incident: result });
+    });
 });
 
 module.exports  = router;

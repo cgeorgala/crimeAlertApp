@@ -10,6 +10,8 @@ import { AboutUsPage } from '../pages/aboutUs';
 import { PrivacyPage } from '../pages/privacy';
 import { IncidentsFilterListPage } from '../pages/incidentsFilterList';
 import { IncidentsAllFilterListPage } from '../pages/incidentsAllFilterList';
+import { IncidentsListModifyPage } from '../pages/incidentsListModify';
+import { IncidentEditPage } from '../pages/incidentEdit';
 
 export const ROUTES_MAP = {
   login: {
@@ -39,6 +41,20 @@ export const ROUTES_MAP = {
     requireAuth: true,
     requireGuest: false,
     component: IncidentCreatePage,
+  },
+  incidentsListModify: {
+    path: '/incidentsListModify',
+    title: 'Επεξεργασία Συμβάντων',
+    requireAuth: true,
+    requireGuest: false,
+    component: IncidentsListModifyPage,
+  },
+  incidentEdit: {
+    path: '/incidents/:id/edit',
+    title: 'Επεξεργασία Συμβάντος',
+    requireAuth: true,
+    requireGuest: false,
+    component: IncidentEditPage,
   },
   incidentVerify: {
     path: '/incidentVerify',

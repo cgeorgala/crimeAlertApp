@@ -68,6 +68,7 @@ Check all possible endpoints in swagger:
 
 ## Accounts created
 * crime.alert.hua@protonmail.com
+* crime.alert.hua2@protonmail.com
 * crime.police.hua@protonmail.com
 * crime.alert.user.hua@proton.me
 * crime.alert.user2.hua@proton.me
@@ -143,13 +144,13 @@ unix  2      [ ACC ]     STREAM     LISTENING     19616    -                   /
 * email: crime.alert.hua@gmail.com
 
 ## Police 
-* username: crimePolice | password: police123
+* username: crimePolice | password: 123456
 * email: crime.police.hua@protonmail.com
 
 
 ## Citizens 
 * User1
-* username: christinageo | password: christina123
+* username: chrisgeo | password: 123456
 * email: crime.alert.user.hua@proton.me
 
 * User2
@@ -157,6 +158,10 @@ unix  2      [ ACC ]     STREAM     LISTENING     19616    -                   /
 * email: crime.alert.user2.hua@proton.me
 
 * User3
-* username: giannis | password: 123456
+* username: katerina | password: 123456
 * email: crime.alert.hua@protonmail.com
+
+* User4
+* username: giannis | password: 123456
+* email: crime.alert.hua2@protonmail.com
 

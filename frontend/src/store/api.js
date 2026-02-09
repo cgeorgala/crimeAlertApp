@@ -75,12 +75,39 @@ export const api = createApi({
     getMyIncidents: builder.query({
       query: () => '/incidents/myIncidents',
     }),
+    getIncidentById: builder.query({
+      query: (id) => `/incidents/${id}`,
+    }),
     createIncident: builder.mutation({
       query: data => ({
         url: '/incidents/addIncident',
         method: 'POST',
         body: data,
       }),
+    }),
+    modifyIncident: builder.mutation({
+      query: data => ({
+        url: '/incidents/modifyIncident',
+        method: 'PUT',
+        body: data,
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        // const { data } = await queryFulfilled;
+        // dispatch(updateIncidentData(data?.success));
+        try{
+            const { data } = await queryFulfilled;
+            dispatch(showToast({
+              message: 'Η επεξεργασία του συμβάντος ολοκληρώθηκε',
+              severity: 'success',
+            }));
+        }
+        catch(err){
+            dispatch(showToast({
+              message: err?.error?.data?.message ||'Σφάλμα επεξεργασίας συμβάντος',
+              severity: 'error',
+            }));
+        }
+      },
     }),
     validateIncident: builder.mutation({
       query: ({id, status}) => ({
@@ -144,8 +171,10 @@ export const {
   useCreateUserMutation,
   useLoginUserMutation,
   useCreateIncidentMutation,
+  useModifyIncidentMutation,
   useValidateIncidentMutation,
   useGetMyIncidentsQuery,
+  useGetIncidentByIdQuery,
   useLazyLogoutUserQuery,
   useModifyUserInfoMutation,
   useGetTermsOfUseQuery,
