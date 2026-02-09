@@ -333,13 +333,14 @@ const getIncidentsByUserQuery = `
     severity,
     address, 
     latitude,
-    longitude, 
+    longitude,
+    verify_status, 
     description,
     date_created,
     date_modified
   FROM incidents
   WHERE usr_id = $1
-  ORDER BY date_created DESC
+  ORDER BY incident_date DESC
   LIMIT $2 OFFSET $3
 `;
 
