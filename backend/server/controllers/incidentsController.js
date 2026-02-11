@@ -260,7 +260,7 @@ const validateIncidentQuery = `
 function validateIncident(req,callback)
 {
   const {id, verify_status} = req.body;
-  const userRole = req.user.role; //from auth middleware
+  const userRole = req.user.role;
   const validStatus = ['Verified-official', 'Verified-Unofficial', 'Unverified'];
   
   if (userRole !== 'police')
@@ -350,7 +350,7 @@ const countIncidentsQuery = `
 
 function getIncidentsByUser(req,callback)
 {
-  const userId= req.user.id; //from auth middleware
+  const userId= req.user.id;
 
   //Pagination
   let page = parseInt(req.query.page, 10) || 1;

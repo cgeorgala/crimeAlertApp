@@ -146,7 +146,7 @@ export const IncidentForm = ({mode = 'create', initialValues, onSuccess}) => {
               <Grid size={{ md: 12 }}>
                 <FormInput
                   control={control}
-                  textFieldProps={{ rows: 3 }}
+                  textFieldProps={{ multiline: true, rows: 5, }}
                   label={ADD_INCIDENT_FIELD_LABELS.DESCRIPTION}
                   name={ADD_INCIDENT_FIELD_NAMES.DESCRIPTION}
                 />
