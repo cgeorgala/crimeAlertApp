@@ -40,16 +40,13 @@ const getActiveUsersEmailsQuery = `
   WHERE is_active = true
 `;
 
-function notifyUsersAboutIncident(incident)
+async function notifyUsersAboutIncident(incident)
 {
   console.log("Start notifyUsersAboutIncident!");
-  db_pool.query(getActiveUsersEmailsQuery,
-    (err, result) => {
-      console.log(err, result);
-      if (err) {
-        console.error('Failed to fetch user emails:', err);
-        return;
-      }
+  try {
+      const start = Date.now();
+
+      const result = await db_pool.query(getActiveUsersEmailsQuery);
 
       const emails = result.rows.map(r => r.email);
       if (!emails.length)
@@ -73,12 +70,15 @@ function notifyUsersAboutIncident(incident)
           `,
       };
 
-      transporter.sendMail(emailOptions, (emailErr) => {
-        if (emailErr){
-        console.error('Email notification failed:', emailErr);
-        }
-      });
-    });
+      await transporter.sendMail(emailOptions);
+      const end = Date.now();
+
+      console.log("Email send time:", end - start, "ms");
+  }
+  catch (emailErr)
+  {
+      console.error('Email notification failed:', emailErr);
+  }
 }
 
 function setIncidentDefaults(body)
@@ -354,15 +354,15 @@ function getIncidentsByUser(req,callback)
 
   //Pagination
   let page = parseInt(req.query.page, 10) || 1;
-  let limit = parseInt(req.query.limit, 10) || 10;
+  let limit = parseInt(req.query.limit, 10) || 200;
 
   //Validate received values
   if (isNaN(page) || page <1){
     page = 1;
   }
-  if (isNaN(limit) || limit <1 || limit >50){
-    limit = 10;
-  }
+  // if (isNaN(limit) || limit <1 || limit >50){
+  //   limit = 10;
+  // }
 
   const offset = (page -1) * limit;
 
@@ -435,15 +435,15 @@ function getAllIncidents(req,callback)
 
   //Pagination
   let page = parseInt(req.query.page, 10) || 1;
-  let limit = parseInt(req.query.limit, 10) || 10;
+  let limit = parseInt(req.query.limit, 10) ||200;
 
   //Validate received values
   if (isNaN(page) || page <1){
     page = 1;
   }
-  if (isNaN(limit) || limit <1 || limit >50){
-    limit = 10;
-  }
+  // if (isNaN(limit) || limit <1 || limit >50){
+  //   limit = 10;
+  // }
 
   const offset = (page -1) * limit;
   const startIndex = 1;

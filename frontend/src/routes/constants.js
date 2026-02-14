@@ -58,7 +58,7 @@ export const ROUTES_MAP = {
   },
   incidentVerify: {
     path: '/incidentVerify',
-    title: 'Επαλήθευση Συμβάντος',
+    title: 'Επαλήθευση Συμβάντων',
     requireAuth: true,
     requireGuest: false,
     component: IncidentVerifyPage,

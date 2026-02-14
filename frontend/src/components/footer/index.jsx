@@ -22,17 +22,19 @@ export const Footer = () => {
       }}
     >
       <Grid container>
-        <Grid item size={3}></Grid>
-        <Grid item size={6}></Grid>
+        <Grid size={3}></Grid>
+        <Grid size={6}></Grid>
         {/*Links on the right*/}
-        <Grid item size={3}>
+        <Grid size={3}>
           <Box sx={{textAlign: 'right', pr: 4}}>
           <Typography sx={{fontWeight: 600, mb: 1}}>
             {FOOTER_TEXT.LINKS_TITLE}
           </Typography>
 
           {publicRoutes.map(route => (
-            <Link href="#" 
+            <Link 
+            key={route.path}
+            href="#" 
             onClick={() => handleLinkClick(route.path)}
             sx={{
               display: 'block',
@@ -50,7 +52,7 @@ export const Footer = () => {
         </Box>
         </Grid>
         {/*Copyright*/}
-        <Grid item size={12}>
+        <Grid size={12}>
           <Typography
             variant="body2"
             sx={{ 
